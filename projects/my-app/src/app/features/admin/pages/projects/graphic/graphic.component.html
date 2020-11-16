@@ -1,0 +1,106 @@
+<div class="child-wrapper">
+  <div class="child-element"
+    *ngIf="childArray?.length > 0"
+    (click)="changeTab(selectParentPage)"
+    title="Открыть страницу {{ selectParentPage?.data?.name }}">
+    <p class="child__name" [class.active]="selectedPage?.id === selectParentPage?.id">{{selectParentPage?.data?.name}}</p>
+  </div>
+  <div
+    *ngFor="let child of childArray" 
+    class="child-element"
+    (click)="changeTab(child)"
+    title="Открыть страницу {{ child.data.name }}">
+    <p class="child__name" [class.active]="selectedPage?.id === child?.id">{{child?.data.name}}</p>
+  </div>
+</div>
+<ng-container *ngIf="lineChartData.length !== 0; else noChannels">
+  <h3>{{ 'SHOW.GRAPHIC.TITLE' | translate }}</h3>
+  <div class="graphic-wrap">
+    <div class="graphic" *ngIf="lineChartData[0]">
+      <canvas baseChart
+        [datasets]="lineChartData"
+        [labels]="lineChartLabels"
+        [options]="lineChartOptions"
+        [colors]="lineChartColors"
+        [legend]="lineChartLegend"
+        [chartType]="lineChartType"
+        [plugins]="lineChartPlugins">
+      </canvas>
+    </div>
+    <div class="graphic-settings">
+      <button class="graphic__btn" (click)="openChannelsModal()">
+        <img src="/assets/img/settings.svg" alt="">
+        Настроить графики
+      </button>
+      <h4>{{ 'SHOW.GRAPHIC.PERIOD.TITLE' | translate }}</h4>
+      <div class="label-radio">
+        <input type="radio" [(ngModel)]="graphSettings.type" 
+        (ngModelChange)="getGraphs()"
+        value="date" id="g-date">
+        <label for="g-date">{{ 'SHOW.GRAPHIC.PERIOD.DATE' | translate }}</label>
+      </div>
+      <div class="label-form">
+        <input type="text"
+              class="date"
+              [matDatepicker]="date"
+              [disabled]="graphSettings.type !== 'date'"
+              [(ngModel)]="graphSettings.date"
+              (ngModelChange)="getGraphs()">
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker #date></mat-datepicker>
+      </div>
+      <div class="label-radio">
+        <input type="radio" [(ngModel)]="graphSettings.type" 
+        (ngModelChange)="getGraphs()"
+        value="fixed" id="g-fixed">
+        <label for="g-fixed">{{ 'SHOW.GRAPHIC.PERIOD.FIX.TITLE' | translate }}</label>
+      </div>
+      <div class="label-form">
+        <div class="period">
+          <select [(ngModel)]="graphSettings.fixed" [disabled]="graphSettings.type !== 'fixed'" (ngModelChange)="getGraphs()">
+            <option value="week">{{ 'SHOW.GRAPHIC.PERIOD.FIX.WEEK' | translate }}</option>
+            <option value="month">{{ 'SHOW.GRAPHIC.PERIOD.FIX.MONTH' | translate }}</option>
+            <option value="year">{{ 'SHOW.GRAPHIC.PERIOD.FIX.YEAR' | translate }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="label-radio">
+        <input type="radio" [(ngModel)]="graphSettings.type" 
+        (ngModelChange)="getGraphs()"
+        value="custom" id="g-custom">
+        <label for="g-custom">{{ 'SHOW.GRAPHIC.PERIOD.ARBITARY' | translate }}</label>
+      </div>
+      <div class="label-form">
+        <span>{{ 'SHOW.GRAPHIC.START' | translate }}</span>
+        <input type="text"
+              class="date"
+              [matDatepicker]="dateStart"
+              [disabled]="graphSettings.type !== 'custom'" 
+              [(ngModel)]="graphSettings.dateStart"
+              (ngModelChange)="getGraphs()">
+        <mat-datepicker-toggle matSuffix [for]="dateStart"></mat-datepicker-toggle>
+        <mat-datepicker #dateStart></mat-datepicker>
+      </div>
+      <div class="label-form">
+        <span>{{ 'SHOW.GRAPHIC.END' | translate }}</span>
+        <input type="text"
+              class="date"
+              [matDatepicker]="dateEnd"
+              [disabled]="graphSettings.type !== 'custom'" 
+              [(ngModel)]="graphSettings.dateEnd"
+              (ngModelChange)="getGraphs()">
+        <mat-datepicker-toggle matSuffix [for]="dateEnd"></mat-datepicker-toggle>
+        <mat-datepicker #dateEnd></mat-datepicker>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-template #noChannels>
+  <div class="no-schemes">
+    <img src="assets/img/no-graphics.png">
+    <h2>Для данной страницы не настроены каналы <br> для отображения на графике.</h2>
+    <a (click)="openChannelsModal()">Настроить графики</a>
+  </div>
+</ng-template>
+<my-org-channels-modal *ngIf="channelsModal" [selectedPage]="selectedPage" (getGraphs)="getChannels()" (closeChannelsModal)="closeChannelsModal()"></my-org-channels-modal>
+<my-org-loader *ngIf="loader"></my-org-loader>

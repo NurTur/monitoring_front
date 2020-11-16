@@ -1,0 +1,142 @@
+.equipment {
+  display: flex;
+  min-height: 100%;
+  &-sidebar {
+    min-width: 297px;
+    border-right: 1px solid #2A3960;
+    padding: 30px 15px 0 45px;
+  }
+  h3 {
+    font-size: 18px;
+    line-height: 23px;
+    color: #FFFFFF;
+    margin: 0 0 25px 10px;
+    font-weight: 700;
+  }
+  &__item {
+    border-radius: 5px;
+    padding: 8px 0 9px 10px;
+    font-size: 18px;
+    line-height: 23px;
+    color: #FFFFFF;
+    cursor: pointer;
+    margin: 0;
+  }
+  &-wrap {
+    width: 100%;
+    padding: 0 41px 0 31px;
+  }
+  &-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 31px 0 13px 8px;
+  }
+  .new {
+    background: #4980FF;
+    border-radius: 5px;
+    padding: 10px 44px;
+    font-size: 16px;
+    line-height: 21px;
+    color: #FFFFFF;
+    font-weight: 700;
+    border: none;
+    outline: none;
+  }
+}
+
+.channel {
+  width: 100%;
+  z-index: 100;
+  border-radius: 10px;
+  &-table {
+    border: 1px solid #2B3B64;
+    border-radius: 5px;
+    margin-bottom: 30px;
+  }
+  &-items {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px solid #2B3B64;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  &__item {
+    display: flex;
+    font-size: 16px;
+    line-height: 21px;
+    color: #fff;
+    width: 200px;
+    border-left: 1px solid #2B3B64;
+    padding: 10px 0 10px 15px;
+    &:last-child {
+      width: 105px;
+    }
+  }
+  &__date {
+    max-width: 140px;
+    padding: 10px 0 9px 15px;
+    border-radius: 5px;
+    margin-right: -41px;
+    outline: none;
+    border: none;
+    background: #162753;
+    color: #fff;
+    &.last {
+      margin-left: 13px;
+    }
+  }
+  &-inner {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  &-period {
+    margin-right: 20px;
+  }
+  &__icon {
+    width: 32px;
+    height: 32px;
+    margin-left: 7px;
+  }
+}
+.active {
+  background: #4980FF;
+}
+.icon {
+  width: 16px;
+  margin-right: 12px;
+}
+.period {
+  font-size: 16px;
+  line-height: 21px;
+  color: #ffffff;
+  margin: 0 24px 0 0;
+  font-weight: 700;
+}
+.unselect {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  p {
+    margin-top: 64px;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 47px;
+    color: #FFFFFF;
+  }
+}
+.send__date {
+  background: #4980FF;
+  border-radius: 5px;
+  color: #fff;
+  outline: none;
+  border: none;
+  padding: 9px;
+  margin-left: 10px;
+}

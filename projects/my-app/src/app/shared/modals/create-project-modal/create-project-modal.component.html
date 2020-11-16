@@ -1,0 +1,32 @@
+<div class="page-modal show">
+	<div class="overlay"></div>
+	<div class="form">
+		<div class="close" (click)="closeModal.emit()"></div>
+		<form>
+			<h1 class="header">{{ editPage ? 'Настройки проекта' : 'Создать проект'}}</h1>
+			<div class="label-form">
+				<label for="name">Название</label>
+				<input type="name"[(ngModel)]="projectName" required="required" name="name" autocomplete="off">
+			</div>
+			<div class="label-form">
+				<label for="status">Статус</label>
+				<select [className]="projectStatus == 1 ? 'active' : 'inactive'" name="status" [(ngModel)]="projectStatus">
+					<option value=1>Активный</option>
+					<option value=0>Деактивирован</option>
+				</select>
+			</div>
+			<div class="label-form">
+				<label for="client">Клиент</label>
+				<select [(ngModel)]="projectClient" name="client">
+					<option *ngFor="let client of clientList; index as i" value={{client.id}}>{{client.data.name}}</option>
+				</select>
+			</div>
+			<div class="form-btns">
+				<div class="btn primary" (click)="editPage ? update() : create()">
+					{{ editPage ? 'Сохранить' : 'Создать' }}
+				</div>
+				<div class="btn" (click)="closeModal.emit()">Отмена</div>
+			</div>
+		</form>
+	</div>
+</div>

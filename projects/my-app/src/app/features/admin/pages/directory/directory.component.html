@@ -1,0 +1,272 @@
+<div class="directory">
+  <div class="directory-sidebar">
+    <h3>Справочники</h3>
+    <div class="directory-items">
+      <p class="directory__item" [class.active]="isCountry" (click)="changeDirectory('country')">Страны</p>
+      <p class="directory__item" [class.active]="isManufacturer" (click)="changeDirectory('manufacturer')">Производители оборудования</p>
+      <p class="directory__item" [class.active]="isControllerModel" (click)="changeDirectory('controller-model')">Модели контроллеров</p>
+      <p class="directory__item" [class.active]="isControllerStatus" (click)="changeDirectory('controller-status')">Статусы контроллеров</p>
+      <p class="directory__item" [class.active]="isSensorModel" (click)="changeDirectory('sensor-model')">Модели датчиков</p>
+      <p class="directory__item" [class.active]="isSensorType" (click)="changeDirectory('sensor-type')">Типы датчиков</p>
+      <p class="directory__item" [class.active]="isSensorStatus" (click)="changeDirectory('sensor-status')">Статусы датчиков</p>
+      <p class="directory__item" [class.active]="isChennelType" (click)="changeDirectory('channel-type')">Типы измерительных каналов</p>
+      <p class="directory__item" [class.active]="isChannelValueStatus" (click)="changeDirectory('channel-value-status')">Статусы значений каналов</p>
+    </div>
+	</div>
+	<div class="directory-wrap">
+		<div *ngIf="!isCountry && !isManufacturer && !isControllerModel && !isControllerStatus && !isSensorModel && !isSensorType && !isSensorStatus && !isChennelType && !isChannelValueStatus" class="unselect">
+			<img src="assets/img/box.svg" alt="">
+			<p>Выберите нужный раздел в меню слева</p>
+		</div>
+		<ng-container *ngIf="isChennelType">
+			<div class="directory-inner">
+				<h3>Типы измерительных каналов</h3>
+				<button class="new" (click)="changeModal('channel-type')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">Название</span>
+						<span class="channel__item">Единица измерения</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let channel of channelType">
+							<my-org-directory-tabel [channel]="channel" (getChannelType)="getChannelType()" (changeModal)="changeModal('channel-type')"></my-org-directory-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isSensorType">
+			<div class="directory-inner">
+				<h3>Типы датчиков</h3>
+				<button class="new" (click)="changeModal('sensor-type')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">Название</span>
+						<span class="channel__item">Изображения</span>
+						<span class="channel__item">Нормальное <br> состояние</span>
+						<span class="channel__item">Нет связи с <br> датчиком</span>
+						<span class="channel__item">Предупредительный <br> статус</span>
+						<span class="channel__item">Аварийный <br> статус</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let sensor of sensorType">
+							<my-org-directory-tabel [sensor]="sensor" (getSensorType)="getSensorType()" (changeModal)="changeModal('channel-type')"></my-org-directory-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isSensorModel">
+			<div class="directory-inner">
+				<h3>Модели датчиков</h3>
+				<button class="new" (click)="changeModal('sensor-model')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">Модель датчика</span>
+						<span class="channel__item">Тип датчика</span>
+						<span class="channel__item">Производитель</span>
+						<span class="channel__item">Изображение</span>
+						<span class="channel__item">Документация</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let sModel of sensorModel">
+							<my-org-directory-tabel [sModel]="sModel" [manufacturers]="manufacturers" [sensorType]="sensorType" (getSensorModel)="getSensorModel()" (changeModal)="changeModal('sensor-model')"></my-org-directory-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isControllerModel">
+			<div class="directory-inner">
+				<h3>Модели контроллеров</h3>
+				<button class="new" (click)="changeModal('controller-model')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">Модель контроллера</span>
+						<span class="channel__item">Тип контроллера</span>
+						<span class="channel__item">Производитель</span>
+						<span class="channel__item">Изображение</span>
+						<span class="channel__item">Документация</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let cModel of controllerModel">
+							<my-org-directory-tabel [cModel]="cModel" [cModelsAll]="controllerModel" [manufacturers]="manufacturers" [sensorType]="sensorType" (getControllerModel)="getControllerModel()" (changeModal)="changeModal('controller-model')"></my-org-directory-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isSensorStatus">
+			<div class="directory-inner">
+				<h3>Статусы датчиков</h3>
+				<button class="new" (click)="changeModal('sensor-status')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">Код</span>
+						<span class="channel__item">Описание</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let sStatus of sensorStatus">
+							<my-org-directory-tabel [sStatus]="sStatus" (getSensorStatus)="getSensorStatus()" (changeModal)="changeModal('sensor-status')"></my-org-directory-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isControllerStatus">
+			<div class="directory-inner">
+				<h3>Статусы контроллеров</h3>
+				<button class="new" (click)="changeModal('controller-status')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">Код</span>
+						<span class="channel__item">Описание</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let cStatus of controllerStatus">
+							<my-org-directory-tabel [cStatus]="cStatus" (getControllerStatus)="getControllerStatus()" (changeModal)="changeModal('controller-status')"></my-org-directory-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isChannelValueStatus">
+			<div class="directory-inner">
+				<h3>Статусы измерительных каналов</h3>
+				<button class="new" (click)="changeModal('channel-value-status')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">Код</span>
+						<span class="channel__item">Описание</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let cvStatus of channelValueStatus">
+							<my-org-directory-tabel [cvStatus]="cvStatus" (getChannelValueStatus)="getChannelValueStatus()" (changeModal)="changeModal('channel-value-status')"></my-org-directory-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isManufacturer">
+			<div class="directory-inner">
+				<h3>Производители оборудования</h3>
+				<button class="new" (click)="changeModal('manufacturer')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">Название</span>
+						<span class="channel__item">Страна</span>
+						<span class="channel__item">Email</span>
+						<span class="channel__item">Описание</span>
+						<span class="channel__item">Сайт</span>
+						<span class="channel__item">Логотип</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let manufacturer of manufacturers">
+							<my-org-directory-tabel [countries]="countries" [manufacturer]="manufacturer" (getManufacturer)="getManufacturer()" (changeModal)="changeModal('manufacturer')"></my-org-directory-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isCountry">
+			<div class="directory-inner">
+				<h3>Производители оборудования</h3>
+				<button class="new" (click)="changeModal('country')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">Название</span>
+						<span class="channel__item">Код</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let country of countries">
+							<my-org-directory-tabel [country]="country" (getCountry)="getCountry()" (changeModal)="changeModal('manufacturer')"></my-org-directory-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+</div>
+<my-org-channel-type-modal *ngIf="channelTypeModal" (getChannelType)="getChannelType()" (changeModal)="changeModal('channel-type')"></my-org-channel-type-modal>
+<my-org-sensor-type-modal *ngIf="sensorTypeModal" (getSensorType)="getSensorType()" (changeModal)="changeModal('sensor-type')"></my-org-sensor-type-modal>
+<my-org-sensor-model-modal *ngIf="sensorModelModal" [manufacturers]="manufacturers" [sensorType]="sensorType" (getSensorModel)="getSensorModel()" (changeModal)="changeModal('sensor-model')"></my-org-sensor-model-modal>
+<my-org-controller-model-modal *ngIf="controllerModelModal" [manufacturers]="manufacturers" (getControllerModel)="getControllerModel()" (changeModal)="changeModal('controller-model')"></my-org-controller-model-modal>
+<my-org-sensor-status-modal *ngIf="sensorStatusModal" (getSensorStatus)="getSensorStatus()" (changeModal)="changeModal('sensor-status')"></my-org-sensor-status-modal>
+<my-org-controller-status-modal *ngIf="controllerStatusModal" (getControllerStatus)="getControllerStatus()" (changeModal)="changeModal('controller-status')"></my-org-controller-status-modal>
+<my-org-channel-value-status-modal *ngIf="channelValueStatusModal" (getChannelValueStatus)="getChannelValueStatus()" (changeModal)="changeModal('channel-value-status')"></my-org-channel-value-status-modal>
+<my-org-manufacturer-modal *ngIf="manufacturerModal" [countries]="countries" (getManufacturer)="getManufacturer()" (changeModal)="changeModal('manufacturer')"></my-org-manufacturer-modal>
+<my-org-country-modal *ngIf="countryModal" (getCountry)="getCountry()" (changeModal)="changeModal('country')"></my-org-country-modal>
+
+
+<ng-container *ngIf="true">
+	<div class="modal" *ngIf="false">
+		<div class="form">
+			<h1>История “Тип измерительного канала” : Смещение </h1>
+			<div class="channel">
+			  <div class="channel-table">
+			    <div class="channel-items header">
+			      <span class="channel__item narrow">Дата</span>
+			      <span class="channel__item">Название</span>
+			      <span class="channel__item">Единица измерения</span>
+			      <span class="channel__item">Пользователь</span>
+			    </div>
+			    <div class="channel-list">
+			      <div class="channel-items">
+			        <span class="channel__item narrow">
+						12.12.2020
+			          	11.12.2012</span>
+			        <span class="channel__item">
+						Смещение
+					</span>
+			        <span class="channel__item">
+						мм
+					</span>
+			        <span class="channel__item">
+						Иван Петров
+			        </span>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<div class="modal" *ngIf="false">
+		<div class="form narrow">
+			<h1>Удаление</h1>
+			<div class="inputs">
+				<label>Вы действительно хотите удалить тип измерительных каналов “Смещение”?</label>
+				<div class="form-btns">
+					<button class="btn-default">Да</button>
+					<button>Отмена</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</ng-container>

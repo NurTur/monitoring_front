@@ -1,0 +1,96 @@
+<div class="directory">
+  <div class="directory-sidebar">
+    <div class="directory-items">
+		<h3>Управление пользователями</h3>
+      <p class="directory__item active">Группы (роли)</p>
+      <a routerLink="/users" class="directory__item">Пользователи</a>
+    </div>
+	</div>
+	<div class="directory-wrap">
+		<div class="controller">
+			<div class="directory-inner">
+				<h3>Группы (роли)</h3>
+				<button class="new" (click)="modals.add = true">Новая</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">Группа</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<div class="channel-items" *ngFor="let user of users; index as i">
+							<span class="channel__item">{{user.name}}</span>
+							<span class="channel__item">
+								<img class="icon" src="assets/img/edit-white.svg" alt="" (click)="editUser(user)">
+								<img class="icon" src="assets/img/delete.svg" alt="" (click)="deleteUser(user)">
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<ng-container *ngIf="true">
+	<div class="modal" *ngIf="modals.add">
+		<div class="form add">
+			<h1>{{modals.edit ? 'Редактирование группы (роли)' : 'Добавление новой группы (роли)'}}</h1>
+			<div class="inputs">
+				<label>Имя</label>
+				<input [(ngModel)]="createModal.name">
+			</div>
+			<div class="inputs">
+				<label>Права</label>
+				<div class="add-users">
+					<div class="users-list available">
+						<div class="header">
+							Доступные права
+						</div>
+						<div class="user-list-scroll">
+							<div class="user" *ngFor="let user of createModal.availableGroups"
+							  [class]="createModal.highlightedGroups.includes(user) ? 'selected' : ''"
+							  (click)="highlightUser(user)">{{user.name}}</div>
+						</div>
+						<div class="all" (click)="selectedAll()">Выбрать все</div>
+					</div>
+					<div class="arrows">
+						<div class="arrow" (click)="moveToSelected()">
+							<img src="assets/img/arrow-right.svg">
+						</div>
+						<div class="arrow" (click)="moveToAvailable()">
+							<img src="assets/img/arrow-left.svg">
+						</div>
+					</div>
+					<div class="users-list selected">
+						<div class="header">
+						  Выбранные права
+						</div>
+						<div class="user-list-scroll">
+						  <div class="user" *ngFor="let user of createModal.selectedGroups"
+						    [class]="createModal.highlightedGroups.includes(user) ? 'selected' : ''"
+						    (click)="highlightUser(user)">{{user.name}}</div>
+						</div>
+						<div class="all" (click)="clearAll()">Удалить все</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-btns">
+				<button class="btn-default" (click)="createUser()">Сохранить</button>
+				<button (click)="closeModal()">Отмена</button>
+			</div>
+		</div>
+	</div>
+	<div class="modal" *ngIf="modals.delete">
+		<div class="form narrow">
+			<h1>Удаление</h1>
+			<div class="inputs">
+				<label>Вы действительно хотите удалить группу (роль) {{currentUser.name}}?</label>
+				<div class="form-btns">
+					<button class="btn-default" (click)="deleteClientFinal()">Да</button>
+					<button (click)="closeModal()">Отмена</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</ng-container>

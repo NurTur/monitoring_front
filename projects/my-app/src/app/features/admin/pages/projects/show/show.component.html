@@ -1,0 +1,56 @@
+<div class="top-cntrls" *ngIf="selectedPage">
+	<div class="child-wrapper">
+		<div class="child-element"
+			*ngIf="childArray?.length > 0"
+			(click)="changeTab(selectParentPage)"
+			title="Открыть страницу {{ selectParentPage?.data?.name }}">
+			<p class="child__name" [class.active]="selectedPage?.id === selectParentPage?.id">{{selectParentPage?.data?.name}}</p>
+		</div>
+		<div
+			*ngFor="let child of childArray" 
+			class="child-element"
+			(click)="changeTab(child)"
+			cdkDrag
+			cdkDragBoundary=".pages-inner" 
+			title="Открыть страницу {{ child.data.name }}">
+			<p class="child__name" [class.active]="selectedPage?.id === child?.id">{{child?.data.name}}</p>
+		</div>
+	</div>
+</div>
+<div class="canvas" *ngIf="selectedPage">
+	<div class="left">
+		<div id="map">
+			<button class="target" (click)="target()">
+				<img src="/assets/img/target.svg" alt="">
+			</button>
+		</div>
+	</div>
+	<div class="right" [class.hide]="sidebar">
+		<div class="right-change" (click)="changeSidebar()"><img [class.rotate]="sidebar" src="/assets/img/arrow-right.svg" alt=""></div>
+		<div class="right-wrapper">
+			<h3>Датчики на мнемосхеме</h3>
+			<ng-container *ngFor="let s of sensors">
+				<p class="sensor__type" (click)="showSensors(s)" *ngIf="s.sensors.length !== 0">
+					{{s?.name}}
+					<img [class.rotate]="s.show" src="/assets/img/arrow-blue.svg" alt="">
+				</p>
+				<div style="display: flex; flex-wrap: wrap;" *ngIf="!s?.show">
+					<div style="position: relative;" *ngFor="let sensor of s.sensors">
+						<button class="sensor__btn" *ngIf="isSensorOnPage(sensor?.id)">
+							<img class="sensor__img" *ngIf="sensor?.status === 'DEFAULT'" [src]="sensor?.model?.type?.data?.normal_state_icon" alt="">
+							<img class="sensor__img" *ngIf="sensor?.status === 'ZERO' || sensor?.status === 'NO_DATA' || sensor?.status === 'NAN'" [src]="sensor?.model?.type?.data?.no_data_icon" alt="">
+							<img class="sensor__img" *ngIf="sensor?.status === 'WARNING'" [src]="sensor?.model?.type?.data?.warning_state_icon" alt="">
+							<img class="sensor__img" *ngIf="sensor?.status === 'CRITICAL'" [src]="sensor?.model?.type?.data?.critical_state_icon" alt="">
+							<p class="sensor__name">{{sensor?.data?.project_number}}</p>
+						</button>
+					</div>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+</div>
+<div *ngIf="!selectedPage" class="no-schemes">
+	<img src="assets/img/no-schemes.png">
+	<h1>В данном проекте пока нет мнемосхем.</h1>
+</div>
+<!-- <my-org-loader *ngIf="loader"></my-org-loader> -->

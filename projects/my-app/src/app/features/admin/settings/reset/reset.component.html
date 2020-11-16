@@ -1,0 +1,23 @@
+<div class="card">
+	<form class="form-signin" [formGroup]="passwordForm" (ngSubmit)="password()">
+		<div class="label-form">
+			<label for="name">{{ 'SETTINGS.PASSWORD' | translate }}</label>
+			<input type="password" required="required" formControlName="password" name="password">
+			<div class="error">{{passwordForm.get('password')?.errors?.error}}</div>
+		</div>
+		<div class="label-form">
+			<label for="name">{{ 'SETTINGS.RE_PASSWORD' | translate }}</label>
+			<input type="password" required="required" formControlName="repeat" name="repeat">
+			<div class="error">{{passwordForm.get('password')?.errors?.error}}</div>
+		</div>
+		<div class="bottom-btns">
+			<button class="btn">{{ 'SETTINGS.CHANGE' | translate }}</button>
+			<div class="btn btn-white" *ngIf="projects" [routerLink]="['/projects/', projects[0]?.id]">{{ 'SETTINGS.CANCEL' | translate }}</div>
+			<div class="btn btn-white" *ngIf="!projects">{{ 'SETTINGS.CANCEL' | translate }}</div>
+		</div>
+		<div class="error non-field-error">{{errorMessage}}</div>
+	</form>
+</div>
+<div class="some-info-text" *ngIf="successMessage !== ''">
+	{{successMessage}}
+</div>

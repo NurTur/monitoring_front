@@ -1,0 +1,82 @@
+<div class="report">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <div class="report-wrap">
+      <div class="report-inner">
+        <p>{{ 'REPORTS.PERIOD' | translate }}</p>
+        <input type="text"
+                  class="report__date"
+                  [matDatepicker]="s"
+                  #start="ngModel"
+                  [(ngModel)]="startDate"
+                  name="start">
+          <mat-datepicker-toggle matSuffix [for]="s"></mat-datepicker-toggle>
+          <mat-datepicker #s></mat-datepicker>
+          <input type="text"
+                  class="report__date last"
+                  [matDatepicker]="e"
+                  #end="ngModel"
+                  [(ngModel)]="endDate"
+                  name="endDate">
+          <mat-datepicker-toggle matSuffix [for]="e"></mat-datepicker-toggle>
+          <mat-datepicker #e></mat-datepicker>
+      </div>
+      <div class="report-inner">
+        <p>{{ 'REPORTS.EXPORT' | translate }}</p>
+        <span>{{ 'REPORTS.HOURS' | translate }}</span>
+        <input type="number" 
+                required 
+                minlength="1"
+                max="24" 
+                class="report__time"  
+                #hour="ngModel" 
+                name="hour"
+                [(ngModel)]="hours" 
+                [class.error]="(hour.invalid && (hour.dirty || hour.touched)) || hour.value > 24">
+        <span>{{ 'REPORTS.MINUTES' | translate }}</span>
+        <input type="number" 
+                required max="60" 
+                class="report__time" 
+                #min="ngModel" 
+                name="min"
+                [(ngModel)]="minutes" 
+                [class.error]="(min.invalid && (min.dirty || min.touched)) || min.value > 60">
+        <span>{{ 'REPORTS.SECONDS' | translate }}</span>
+        <input type="number" 
+                name="sec"
+                required 
+                max="60" 
+                class="report__time"  
+                #sec="ngModel"
+                [(ngModel)]="seconds"
+                [class.error]="(sec.invalid && (sec.dirty || sec.touched)) || sec.value > 60">
+      </div>
+      <button class="btn" type="submit" [disabled]="f.invalid">
+        {{ 'REPORTS.DOWNLOAD' | translate }}
+      </button>
+    </div>
+    
+    <div class="report-table">
+      <div class="report-items">
+        <span class="report__item title"><mat-checkbox [checked]="allComplete" [indeterminate]="someComplete()"
+          (change)="setAll($event.checked)"></mat-checkbox>{{ 'REPORTS.CHANNELS.TITLE' | translate }}</span>
+        <span class="report__item title">№</span>
+        <span class="report__item title">{{ 'REPORTS.CHANNELS.MEASURING' | translate }}</span>
+        <span class="report__item title">{{ 'REPORTS.CHANNELS.SENSOR' | translate }}</span>
+        <span class="report__item title">{{ 'REPORTS.CHANNELS.CONTROLLER' | translate }}</span>
+      </div>
+      <div class="report-list">
+        <div class="report-items" *ngFor="let item of channelList">
+          <span class="report__item">
+            <mat-checkbox [(ngModel)]="item.completed" name="checkbox"
+            #checkbox="ngModel"
+            (ngModelChange)="updateAllComplete(item)"></mat-checkbox></span>
+          <span class="report__item">{{ item.id }}</span>
+          <span class="report__item">{{ item.code }}</span>
+          <span class="report__item">{{ item.sensor?.name }}</span>
+          <span class="report__item">{{ item.sensor?.controller?.data?.name }}</span>
+        </div>
+      </div>
+    </div>
+  </form>
+  <my-org-loader *ngIf="loader"></my-org-loader>
+</div>

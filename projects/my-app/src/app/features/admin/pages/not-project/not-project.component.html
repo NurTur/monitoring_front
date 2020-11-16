@@ -1,0 +1,6 @@
+<div class="not">
+  <img src="/assets/img/logo-big.svg" alt="">
+  <h1>Добро пожаловать в систему Atlas У вас пока нет проектов</h1>
+  <a (click)="createProject=true">Создать проект +</a>
+</div>
+<my-org-create-project-modal *ngIf="createProject" (closeModal)="createProject=false"></my-org-create-project-modal>

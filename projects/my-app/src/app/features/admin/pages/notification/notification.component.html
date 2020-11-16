@@ -1,0 +1,100 @@
+<div class="top-filter">
+	<div class="left">
+		<ul class="filter-ul">
+			<li><img src="assets/img/filter.svg" alt=""></li>
+			<li>{{ 'ALERTS.FILTER.TITLE' | translate }}:</li>
+			<li>
+				<select [(ngModel)]="filterForm.not_confirmed" (ngModelChange)="getNotify()">
+					<option value="">{{ 'ALERTS.FILTER.STATUS.TITLE' | translate }}</option>
+					<option value="False">{{ 'ALERTS.FILTER.STATUS.FIRST' | translate }}</option>
+					<option value="True">{{ 'ALERTS.FILTER.STATUS.SECOND' | translate }}</option>
+				</select>
+			</li>
+			<li>
+				<select [(ngModel)]="filterForm.state" (ngModelChange)="getNotify()">
+					<option value="">{{ 'ALERTS.FILTER.TYPE.TITLE' | translate }}</option>
+					<option value="CRITICAL" style="color: #FF0000;">{{ 'ALERTS.FILTER.TYPE.FIRST' | translate }}</option>
+					<option value="WARNING" style="color: #FFBB0C;">{{ 'ALERTS.FILTER.TYPE.SECOND' | translate }}</option>
+					<option value="DEFAULT">{{ 'ALERTS.FILTER.TYPE.THIRD' | translate }}</option>
+				</select>
+			</li>
+		</ul>
+		<div class="filter-date">
+			<input type="radio" [(ngModel)]="fixed" 
+			(ngModelChange)="getNotify()"
+			value="custom" id="g-custom">
+			<div class="fix-period">
+				<select [(ngModel)]="type" [disabled]="fixed !== 'custom'" (ngModelChange)="getNotify()">
+					<option value="today">Сегодня</option>
+					<option value="week">Последние 7 дней</option>
+					<option value="month">Последние 30 дней</option>
+					<option value="alldate">За все время</option>
+				</select>
+			</div>
+			<div class="period-date">
+				<input type="radio" [(ngModel)]="fixed" 
+        (ngModelChange)="getNotify()"
+        value="date" id="g-date">
+				<p class="period">За период</p>
+				<input type="text"
+								class="date"
+								[matDatepicker]="s"
+								#start="ngModel"
+								[(ngModel)]="filterForm.start_datetime"
+								name="start"
+								[disabled]="fixed !== 'date'">
+					<mat-datepicker-toggle matSuffix [for]="s"></mat-datepicker-toggle>
+					<mat-datepicker #s></mat-datepicker>
+					<input type="text"
+									class="date"
+									[matDatepicker]="e"
+									#end="ngModel"
+									[(ngModel)]="filterForm.end_datetime"
+									name="endDate"
+									[disabled]="fixed !== 'date'">
+					<mat-datepicker-toggle matSuffix [for]="e"></mat-datepicker-toggle>
+					<mat-datepicker #e></mat-datepicker>
+					<button class="send__date" (click)="getNotify()">Применить</button>
+			</div>
+		</div>
+	</div>
+	<div class="right">
+		<button class="btn primary" [disabled]="!selectedNotify" title="{{ selectedNotify ? '' : 'Выберите оповещение' }}" (click)="showModal('acknowledgment')">{{ 'ALERTS.ACKNOWLEDGE' | translate }}</button>
+		<button class="btn white" (click)="showModal('notification')">{{ 'ALERTS.CREATE' | translate }}</button>
+	</div>
+</div>
+
+<div class="tabel">
+	<table>
+		<thead>
+			<tr>
+				<td>{{ 'ALERTS.PARAMS.CREATE' | translate }}</td>
+				<td>{{ 'ALERTS.PARAMS.ACKNOWLEDGE' | translate }}</td>
+				<td>{{ 'ALERTS.PARAMS.SENSOR' | translate }}</td>
+				<td>{{ 'ALERTS.PARAMS.MESSAGE' | translate }}</td>
+				<td>{{ 'ALERTS.PARAMS.SONG' | translate }}</td>
+				<td>{{ 'ALERTS.PARAMS.PROJECT' | translate }}</td>
+				<td>{{ 'ALERTS.PARAMS.TEXT' | translate }}</td>
+				<td>{{ 'ALERTS.PARAMS.WHO' | translate }}</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let item of list" (click)="selectedNotify = item" 
+				[class.selected]="selectedNotify === item"
+				class="{{ item.data?.state }}">
+				<td><p>{{ item.created_at | date : 'medium'}}</p></td>
+				<td><p>{{ item.confirmation?.created_at | date : 'medium' }}</p></td>
+				<td><p>{{ item.channel?.code }} / {{ item.channel?.sensor }}</p></td>
+				<td><p>{{ item.data?.message }} </p></td>
+				<td><p>{{ item.data?.sound ? "Да" : "Нет"}}</p></td>
+				<td><p>{{ item.project }}</p></td>
+				<td><p>{{ item.confirmation?.data?.text }}</p></td>
+				<td><p>{{ item.confirmation?.user }}</p></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<my-org-pagination *ngIf="!loader && pagination.count > 20" [filterForm]="filterForm" [pagination]="pagination" (getNotify)="getNotify()"></my-org-pagination>
+<my-org-notification-modal (saveConfirmation)="saveConfirmation($event)" [selectedNotify]="selectedNotify" [confirmMessage]="confirmMessage" [modal]="modal" (closeModal)="closeModal()"></my-org-notification-modal>
+<my-org-loader *ngIf="loader"></my-org-loader>
+<my-org-creat-notification-modal (addNotification)="addNotification($event)" [modal]="nModal" (closeModal)="closeNotificationModal()"></my-org-creat-notification-modal>

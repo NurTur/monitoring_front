@@ -1,0 +1,74 @@
+<div class="wrapper-modal">
+  <div class="wrapper">
+    <div class="close" (click)="changeModal.emit()"></div>
+    <h1 *ngIf="cModel">Редактирование модели контроллера</h1>
+    <h1 *ngIf="!cModel">Создать модель контроллера</h1>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Название</p>
+        <input type="text" [(ngModel)]="model">
+        <p class="label">Тип контроллера</p>
+        <input type="text" [(ngModel)]="type">
+        <p class="label">Производитель</p>
+        <select [(ngModel)]="manufacturer">
+          <option [value]="m.id" *ngFor="let m of manufacturers">{{m?.name}}</option>
+        </select>
+      </div>
+      <div class="inputs">
+        <p class="label">Изображение</p>
+        <div class="photo-wrap" *ngIf="imageSrc">
+          <label for="img"><img [src]="imageSrc" [alt]="imageSrc" class="photo"></label>
+          <button class="trash-btn" (click)="deletePhoto('img')"><img src="assets/img/trash.svg" alt=""></button>
+        </div>
+        <label class="add-img" for="img" *ngIf="!imageSrc"><div>Добавить фото</div></label>
+        <input type="file" id="img" (change)="changePhoto($event, 'img')">
+      </div>
+      <div class="inputs">
+        <p class="label">Документация</p>
+        <input type="file" (change)="changePhoto($event, 'file')">
+      </div>
+    </div>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Нормальное состояние</p>
+        <div class="icon-wrap" *ngIf="normal">
+          <label for="img"><img [src]="normal" [alt]="normal" class="icon-state"></label>
+          <button class="trash-btn" (click)="deletePhoto('normal')"><img src="assets/img/trash.svg" alt=""></button>
+        </div>
+        <label class="add-img icon-add" for="normal" *ngIf="!normal"><div>+</div></label>
+        <input type="file" class="icon" id="normal" (change)="changePhoto($event, 'normal')">
+      </div>
+      <div class="inputs">
+        <p class="label">Нет связи с датчиком</p>
+        <div class="icon-wrap" *ngIf="noData">
+          <label for="img"><img [src]="noData" [alt]="noData" class="icon-state"></label>
+          <button class="trash-btn" (click)="deletePhoto('no_data')"><img src="assets/img/trash.svg" alt=""></button>
+        </div>
+        <label class="add-img icon-add" for="noData" *ngIf="!noData"><div>+</div></label>
+        <input type="file" class="icon" id="noData" (change)="changePhoto($event, 'no_data')">
+      </div>
+      <div class="inputs">
+        <p class="label">Аварийный статус</p>
+        <div class="icon-wrap" *ngIf="critical">
+          <label for="img"><img [src]="critical" [alt]="critical" class="icon-state"></label>
+          <button class="trash-btn" (click)="deletePhoto('critical')"><img src="assets/img/trash.svg" alt=""></button>
+        </div>
+        <label class="add-img icon-add" for="critical" *ngIf="!critical"><div>+</div></label>
+        <input type="file" class="icon" id="critical" (change)="changePhoto($event, 'critical')">
+      </div>
+      <div class="inputs">
+        <p class="label">Предупредительный статус</p>
+        <div class="icon-wrap" *ngIf="warning">
+          <label for="img"><img [src]="warning" [alt]="warning" class="icon-state"></label>
+          <button class="trash-btn" (click)="deletePhoto('warning')"><img src="assets/img/trash.svg" alt=""></button>
+        </div>
+        <label class="add-img icon-add" for="warning" *ngIf="!warning"><div>+</div></label>
+        <input type="file" class="icon" id="warning" (change)="changePhoto($event, 'warning')">
+      </div>
+    </div>
+    <div class="btns">
+      <button class="save" (click)="cModel ? save(true) : save(false)">Создать</button>
+      <button class="cancel" (click)="changeModal.emit()">Отмена</button>
+    </div>
+  </div>
+</div>

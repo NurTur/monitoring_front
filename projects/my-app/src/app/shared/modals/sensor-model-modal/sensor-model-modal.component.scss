@@ -1,0 +1,13 @@
+@import '../sensor-modal/sensor-modal.component.scss';
+.wrapper {
+  .channel {
+    &-list {
+      height: calc(100% - 62px);
+    }
+  }
+}
+.inner {
+  div {
+    margin-right: 20px;
+  }
+}

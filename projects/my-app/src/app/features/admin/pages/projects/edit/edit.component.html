@@ -1,0 +1,114 @@
+<div class="top-cntrls" *ngIf="selectedPage">
+	<div class="child-wrapper">
+		<div class="child-element"
+			*ngIf="childArray?.length > 0"
+			(click)="changeTab(selectParentPage)"
+			title="Открыть страницу {{ selectParentPage?.data?.name }}">
+			<div class="cntrls">
+				<div title="Редактировать подстраницу" (click)="openModalChild(selectParentPage)"><img src="assets/img/edit.svg" alt=""></div>
+				<div title="Удалить подстраницу" (click)="deletePage(selectParentPage)"><img src="assets/img/delete.svg" width="15px" alt=""></div>
+			</div>
+			<p class="child__name" [class.active]="selectedPage?.id === selectParentPage?.id">{{selectParentPage?.data?.name}}</p>
+		</div>
+		<div
+			*ngFor="let child of childArray" 
+			class="child-element"
+			(click)="changeTab(child)"
+			title="Открыть страницу {{ child.data.name }}">
+			<div class="cntrls">
+				<div title="Редактировать подстраницу" (click)="openModalChild(child)"><img src="assets/img/edit.svg" alt=""></div>
+				<div title="Удалить подстраницу" (click)="deletePage(child)"><img src="assets/img/delete.svg" width="15px" alt=""></div>
+			</div>
+			<p class="child__name" [class.active]="selectedPage?.id === child?.id">{{child?.data.name}}</p>
+		</div>
+		<p class="child__name add" (click)="openModalChild(selectedItem, true)">+</p>
+	</div>
+</div>
+
+<div class="canvas" *ngIf="selectedPage">
+	<div class="left">
+		<div id="map">
+			<button class="target" (click)="target()">
+				<img src="/assets/img/target.svg" alt="">
+			</button>
+		</div>
+	</div>
+	<div class="right" [class.hide]="sidebar">
+		<div class="right-change" (click)="changeSidebar()"><img [class.rotate]="sidebar" src="/assets/img/arrow-right.svg" alt=""></div>
+		<div class="right-wrapper">
+			<h3>Все датчики проекта</h3>
+			<ng-container *ngFor="let s of sensors">
+				<p class="sensor__type" (click)="showSensors(s)">
+					{{s?.name}}
+					<img [class.rotate]="s.show" src="/assets/img/arrow-blue.svg" alt="">
+				</p>
+				<div style="display: flex; flex-wrap: wrap;" *ngIf="!s?.show">
+					<div style="position: relative;" *ngFor="let sensor of s.sensors">
+						<img *ngIf="isSensorOnPage(sensor?.id)" src="/assets/img/delete.svg" alt="" class="delete-icon" (click)="deleteSensor(sensor)">
+						<button class="sensor__btn" [disabled]="isSensorOnPage(sensor?.id)" (click)="changeSensor(sensor)">
+							<img class="sensor__img" *ngIf="sensor?.status === 'DEFAULT'" [src]="sensor?.model?.type?.data?.normal_state_icon" alt="">
+							<img class="sensor__img" *ngIf="sensor?.status === 'ZERO' || sensor?.status === 'NO_DATA' || sensor?.status === 'NAN'" [src]="sensor?.model?.type?.data?.no_data_icon" alt="">
+							<img class="sensor__img" *ngIf="sensor?.status === 'WARNING'" [src]="sensor?.model?.type?.data?.warning_state_icon" alt="">
+							<img class="sensor__img" *ngIf="sensor?.status === 'CRITICAL'" [src]="sensor?.model?.type?.data?.critical_state_icon" alt="">
+							<p class="sensor__name">{{sensor?.data?.project_number}}</p>
+						</button>
+						<div class="popup-wrapper" *ngIf="sensor?.show">
+							<div class="popup">
+								<div class="popup__title header-{{sensor?.status}}">
+									<ng-container *ngIf="sensor?.status === 'CRITICAL'">
+										Аварийный статус
+									</ng-container>
+									<ng-container *ngIf="sensor?.status === 'WARNING'">
+										Предупредительный статус
+									</ng-container>
+									<ng-container *ngIf="sensor?.status === 'DEFAULT'">
+										Показания датчика в норме
+									</ng-container>
+									<ng-template>
+										Нет данных с датчика!
+									</ng-template>
+								</div>
+								<div class="popup-wrap">
+									<div class="popup__name">{{sensor?.model?.type?.data.name}}</div>
+									<div class="popup__name">Модель</div>
+								</div>
+								<div class="popup-wrap" style="margin-bottom:8px">
+									<div class="popup__value">{{sensor?.name}}</div>
+									<div class="popup__value" style="min-width: 36px;">{{sensor?.model.data.name}}</div>
+								</div>
+								<div class="popup__name">Измерительные каналы</div>
+								<!-- ${sensor?.channels[0] ? `<div class="popup-channel title-${sensor?.channels[0]?.last_channel_value.state} bg-${sensor?.channels[0]?.last_channel_value.state}"><div class="popup-wrap"><div class="popup-channel__name">${sensor?.channels[0]?.type?.data?.name}</div><div class="popup-channel__name" style="min-width: 82px;">${sensor?.channels[0]?.last_channel_value.state}</div></div><div class="popup-wrap"><div class="popup-channel__value">${sensor?.channels[0]?.code}</div><div class="popup-channel__value" style="min-width: 82px;">${sensor?.channels[0]?.last_channel_value.value}</div></div><div class="popup-wrap"><div class="popup-channel__value">Дата</div><div class="popup-channel__value" style="min-width: 82px;">${new Date(sensor?.channels[0]?.last_channel_value.datetime).getDate() + '.' + (new Date(sensor?.channels[0]?.last_channel_value.datetime).getMonth() + 1) + '.' + new Date(sensor?.channels[0]?.last_channel_value.datetime).getFullYear() + ' ' + new Date(sensor?.channels[0]?.last_channel_value.datetime).getHours() + ':' + new Date(sensor?.channels[0]?.last_channel_value.datetime).getMinutes()}</div></div></div>` : ''}
+								${sensor?.channels[1] ? `<div class="popup-channel title-${sensor?.channels[1]?.last_channel_value.state} bg-${sensor?.channels[1]?.last_channel_value.state}"><div class="popup-wrap"><div class="popup-channel__name">${sensor?.channels[1]?.type?.data?.name}</div><div class="popup-channel__name" style="min-width: 82px;">${sensor?.channels[1]?.last_channel_value.state}</div></div><div class="popup-wrap"><div class="popup-channel__value">${sensor?.channels[1]?.code}</div><div class="popup-channel__value" style="min-width: 82px;">${sensor?.channels[1]?.last_channel_value.value}</div></div><div class="popup-wrap"><div class="popup-channel__value">Дата</div><div class="popup-channel__value" style="min-width: 82px;">${new Date(sensor?.channels[1]?.last_channel_value.datetime).getDate() + '.' + (new Date(sensor?.channels[1]?.last_channel_value.datetime).getMonth() + 1) + '.' + new Date(sensor?.channels[1]?.last_channel_value.datetime).getFullYear() + ' ' + new Date(sensor?.channels[1]?.last_channel_value.datetime).getHours() + ':' + new Date(sensor?.channels[1]?.last_channel_value.datetime).getMinutes()}</div></div></div>` : ''}
+								${sensor?.channels[2] ? `<div class="popup-channel title-${sensor?.channels[2]?.last_channel_value.state} bg-${sensor?.channels[2]?.last_channel_value.state}"><div class="popup-wrap"><div class="popup-channel__name">${sensor?.channels[2]?.type?.data?.name}</div><div class="popup-channel__name" style="min-width: 82px;">${sensor?.channels[2]?.last_channel_value.state}</div></div><div class="popup-wrap"><div class="popup-channel__value">${sensor?.channels[2]?.code}</div><div class="popup-channel__value" style="min-width: 82px;">${sensor?.channels[2]?.last_channel_value.value}</div></div><div class="popup-wrap"><div class="popup-channel__value">Дата</div><div class="popup-channel__value" style="min-width: 82px;">${new Date(sensor?.channels[2]?.last_channel_value.datetime).getDate() + '.' + (new Date(sensor?.channels[2]?.last_channel_value.datetime).getMonth() + 1) + '.' + new Date(sensor?.channels[2]?.last_channel_value.datetime).getFullYear() + ' ' + new Date(sensor?.channels[2]?.last_channel_value.datetime).getHours() + ':' + new Date(sensor?.channels[2]?.last_channel_value.datetime).getMinutes()}</div></div></div>` : ''} -->
+								<div class="popup-line"></div>
+								<div class="popup-wrap">
+									<div class="popup__name">Серийный номер</div>
+									<div class="popup__value" style="min-width: 88px;">{{sensor?.data.serial_number}}</div>
+								</div>
+								<div class="popup-wrap">
+									<div class="popup__name">Проектный номер</div>
+									<div class="popup__value" style="min-width: 88px;">{{sensor?.data.project_number}}</div>
+								</div>
+								<div class="popup-wrap">
+									<img class="popup__img" [src]="sensor?.model?.data?.img" [alt]="sensor?.model?.data?.img">
+								</div>
+								<div class="popup__name">Датчик подключен к контроллеру</div>
+								<div class="popup__value">{{sensor?.controller.data.name}}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+</div>
+<div class="some-info-text" *ngIf="showSaved" (click)="showSaved = false">
+	{{ 'EDIT.SAVE_MESSAGE' | translate }}
+</div>
+<div *ngIf="!selectedPage" class="no-schemes">
+	<img src="assets/img/no-schemes.png">
+	<h1>В данном проекте пока нет мнемосхем.<br>
+	  Добавьте к проекту как минимум одну </h1>
+	<h2 (click)="openModal()">Создать мнемосхему +</h2>
+</div>
+<my-org-create-page-modal *ngIf="createEditModal" [editPage]="editPage" [imageSrc]="imageSrc" [pageName]="pageName" (changePageName)="changePageName($event)" (closeModal)="closeModal()" (updatePage)="updatePage()" (fileChange)="onFileChange($event)" (createPage)="createPage()"></my-org-create-page-modal>

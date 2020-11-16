@@ -1,0 +1,31 @@
+<div class="channel">
+  <div class="close" (click)="close()"></div>
+  <h2>Измерительные каналы на странице “{{selectedPage?.data?.name}}” (для построения графиков)</h2>
+  <div class="channel-table">
+    <div class="channel-items">
+      <span class="channel__item"><mat-checkbox [checked]="allComplete" [indeterminate]="someComplete()"
+        (change)="setAll($event.checked)"></mat-checkbox></span>
+      <span class="channel__item">№</span>
+      <span class="channel__item">{{ 'MODAL.CHANNELS.MEASURING' | translate }}</span>
+      <span class="channel__item">{{ 'MODAL.CHANNELS.SENSOR' | translate }}</span>
+      <span class="channel__item" style="margin-right: 4px;">{{ 'MODAL.CHANNELS.CONTROLLER' | translate }}</span>
+    </div>
+    <div class="channel-list">
+      <div class="channel-items" *ngFor="let item of channelList">
+        <span class="channel__item">
+          <mat-checkbox [(ngModel)]="item.completed" name="checkbox"
+          #checkbox="ngModel"
+          (ngModelChange)="updateAllComplete(item)"></mat-checkbox></span>
+        <span class="channel__item">{{ item.id }}</span>
+        <span class="channel__item">{{ item.code }}</span>
+        <span class="channel__item">{{ item.sensor?.name }}</span>
+        <span class="channel__item">{{ item.sensor?.controller?.data?.name }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="channel-btns">
+    <button class="channel__save" (click)="save()">{{ 'MODAL.SAVE' | translate }}</button>
+    <button class="channel__close" (click)="close()">{{ 'MODAL.CANCEL' | translate }}</button>
+  </div>
+</div>
+<my-org-loader *ngIf="loader"></my-org-loader>

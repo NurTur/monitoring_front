@@ -1,0 +1,84 @@
+<div class="wrapper-modal">
+  <div class="wrapper">
+    <div class="close" (click)="changeModal.emit()"></div>
+    <h1 *ngIf="!controller">Создать контроллер</h1>
+    <h1 *ngIf="controller">Редактировать контроллер</h1>
+    <div class="wrap">
+      <div class="inputs">
+        <p class="label">Название</p>
+        <input type="text" [(ngModel)]="name">
+        <div class="inner">
+          <div>
+            <p class="label">Документы</p>
+            <div class="docs">
+              <p class="label">
+                <a *ngIf="modelData?.data?.doc" (click)="downloadFile(modelData?.data?.doc, 'controller')">Скачать документ</a>
+              </p>
+            </div>
+          </div>
+          <div>
+            <p class="label">Изображение модели</p>
+            <img class="img" [src]="modelData?.data?.img" [alt]="modelData?.data?.img">
+          </div>
+        </div>
+      </div>
+      <div class="inputs">
+        <p class="label">Проект</p>
+        <select name="projects" [(ngModel)]="projectName.id" (change)="changeProject($event.target.value)">
+          <option [value]="project.id" *ngFor="let project of listProject">{{project?.data?.name}}</option>
+        </select>
+        <p class="label">Фото установленного контроллера</p>
+        <div class="photo-wrap" *ngIf="imageSrc">
+          <label for="img"><img [src]="imageSrc" [alt]="imageSrc" class="photo"></label>
+          <button class="trash-btn" (click)="deletePhoto()"><img src="assets/img/trash.svg" alt=""></button>
+        </div>
+        <label class="add-img" for="img" *ngIf="!imageSrc"><div>Добавить фото</div></label>
+        <input type="file" id="img" (change)="changePhoto($event)">
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="inputs">
+        <p class="label">Модель</p>
+        <select name="model" [(ngModel)]="selectedModel" (change)="changeModel($event.target.value)">
+          <option [value]="model.id" *ngFor="let model of models">{{model?.data?.name}}</option>
+        </select>
+      </div>
+      <div class="inputs">
+        <p class="label">Серийный номер</p>
+        <input type="text" [(ngModel)]="serialNumber">
+      </div>
+      <div class="inputs">
+        <p class="label">Состояние</p>
+        <select name="status" [(ngModel)]="status" (change)="changeStatus($event.target.value)">
+          <option value="ACTIVE">Активный</option>
+          <option value="INACTIVE">Неактивный</option>
+        </select>
+      </div>
+    </div>
+    <div class="channel" *ngIf="controller">
+      <p class="label">Датчики</p>
+      <div class="channel-table">
+        <div class="channel-items" style="padding-right: 4px;">
+          <span class="channel__item">Название</span>
+          <span class="channel__item">Серийный номер</span>
+          <span class="channel__item">Проектный номер</span>
+          <span class="channel__item">Модель</span>
+          <span class="channel__item">Состояние</span>
+        </div>
+        <div class="channel-list">
+          <div class="channel-items" *ngFor="let sensor of sensors">
+            <span class="channel__item">{{sensor?.name}}</span>
+            <span class="channel__item">{{sensor?.data?.serial_number}}</span>
+            <span class="channel__item">{{sensor?.data?.project_number}}</span>
+            <span class="channel__item">{{sensor?.model?.data?.name}}</span>
+            <span class="channel__item">{{sensor?.data?.status}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="save" (click)="controller ? save() : onSubmit()">Сохранить</button>
+      <button class="cancel" (click)="changeModal.emit()">Отмена</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="wrapper-modal">
+  <div class="wrapper">
+    <div class="close" (click)="changeModal.emit()"></div>
+    <h1>{{ !type ? 'Создать новый' : 'Редактировать' }} <br>
+      “Тип измерительных каналов” </h1>
+    <div class="wrap">
+      <div class="inputs">
+        <div class="inputs">
+          <p class="label">Название</p>
+          <input type="text" [(ngModel)]="name">
+        </div>
+      </div>
+      <div class="inputs">
+        <p class="label">Единицы измерения</p>
+        <select [(ngModel)]="measure" (change)="changeMeasure($event.target.value)">
+          <option [value]="m.code" *ngFor="let m of measures">{{m?.description}}</option>
+        </select>
+      </div>
+      <div class="channel-status">
+        <mat-checkbox [(ngModel)]="status">Статус канала</mat-checkbox>
+      </div>
+    </div>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Формат на мнемосхеме</p>
+        <input type="text" [(ngModel)]="format">
+      </div>
+    </div>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Верхняя граница</p>
+        <input type="text" [(ngModel)]="up">
+      </div>
+      <div class="inputs">
+        <p class="label">Верхняя предупредительная</p>
+        <input type="text" class="warning" [(ngModel)]="upWarning">
+      </div>
+      <div class="inputs">
+        <p class="label">Верхняя аварийная</p>
+        <input type="text" class="critical" [(ngModel)]="upCritical">
+      </div>
+    </div>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Нижняя граница</p>
+        <input type="text" [(ngModel)]="down">
+      </div>
+      <div class="inputs">
+        <p class="label">Нижняя предупредительная</p>
+        <input type="text" class="warning" [(ngModel)]="downWarning">
+      </div>
+      <div class="inputs">
+        <p class="label">Нижняя аварийная</p>
+        <input type="text" class="critical" [(ngModel)]="downCritical">
+      </div>
+    </div>
+    <div class="inner">
+      <mat-checkbox [(ngModel)]="songWarning">Звук при предупреждениях</mat-checkbox>
+      <mat-checkbox [(ngModel)]="songCritical">Звук при авариях</mat-checkbox>
+      <mat-checkbox [(ngModel)]="delta">Дельта</mat-checkbox>
+      <mat-checkbox [(ngModel)]="control">Контроль канала</mat-checkbox>
+    </div>
+    <div class="btns">
+      <button class="save" (click)="type ? save(true) : save(false)">Сохранить</button>
+      <button class="cancel" (click)="changeModal.emit()">Отмена</button>
+    </div>
+</div>

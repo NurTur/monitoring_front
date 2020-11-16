@@ -1,0 +1,114 @@
+<ng-container *ngIf="channel">
+  <div class="channel-items">
+    <span class="channel__item">{{channel?.data?.name}}</span>
+    <span class="channel__item">{{channel?.data?.measure}}</span>
+    <span class="channel__item">
+      <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+      <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeChannelType(channel.id)">
+      <!-- <img class="icon" src="assets/img/History.svg" alt=""> -->
+    </span>
+  </div>
+  <my-org-channel-type-modal *ngIf="modal" (getChannelType)="getChannelType.emit()" [type]="channel" (changeModal)="changeModal()"></my-org-channel-type-modal>
+</ng-container>
+<ng-container *ngIf="sensor">
+  <div class="channel-items">
+    <span class="channel__item">{{sensor?.data?.name}}</span>
+    <span class="channel__item"><img [src]="sensor?.data?.img" [alt]="sensor?.data?.img"></span>
+    <span class="channel__item"><img [src]="sensor?.data?.normal_state_icon" [alt]="sensor?.data?.normal_state_icon"></span>
+    <span class="channel__item"><img [src]="sensor?.data?.no_data_icon" [alt]="sensor?.data?.no_data_icon"></span>
+    <span class="channel__item"><img [src]="sensor?.data?.warning_state_icon" [alt]="sensor?.data?.warning_state_icon"></span>
+    <span class="channel__item"><img [src]="sensor?.data?.critical_state_icon" [alt]="sensor?.data?.critical_state_icon"></span>
+    <span class="channel__item">
+      <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+      <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeSensorType(sensor.id)">
+    </span>
+  </div>
+  <my-org-sensor-type-modal *ngIf="modal" (getSensorType)="getSensorType.emit()" [sensor]="sensor" (changeModal)="changeModal()"></my-org-sensor-type-modal>
+</ng-container>
+<ng-container *ngIf="sModel">
+  <div class="channel-items">
+    <span class="channel__item">{{sModel?.data?.name}}</span>
+    <span class="channel__item">{{sModel?.type?.data?.name}}</span>
+    <span class="channel__item">{{sModel?.manufacturer?.data?.name}}</span>
+    <span class="channel__item"><img [src]="sModel.data.img" [alt]="sModel.data.img"></span>
+    <span class="channel__item"><a *ngIf="sModel?.data?.docs" (click)="downloadFile(sModel?.data?.docs, 'sensor')">Скачать документ</a></span>
+    <span class="channel__item">
+      <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+      <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeSensorModel(sModel.id)">
+    </span>
+  </div>
+  <my-org-sensor-model-modal *ngIf="modal" (getSensorModel)="getSensorModel.emit()" [manufacturers]="manufacturers" [sensorType]="sensorType" [sModel]="sModel" (changeModal)="changeModal()"></my-org-sensor-model-modal>
+</ng-container>
+<ng-container *ngIf="cModel">
+  <div class="channel-items">
+    <span class="channel__item">{{cModel?.data?.name}}</span>
+    <span class="channel__item">{{cModel?.data?.type}}</span>
+    <span class="channel__item">{{cModel?.manufacturer?.data?.name}}</span>
+    <span class="channel__item"><img [src]="cModel.data.img" [alt]="cModel.data.img" onerror="this.style.display='none'"></span>
+    <span class="channel__item"><a *ngIf="cModel?.data?.doc" (click)="downloadFile(cModel?.data?.doc, 'controller')">Скачать документ</a></span>
+    <span class="channel__item">
+      <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+      <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeControllerModel(cModel.id)">
+    </span>
+  </div>
+  <my-org-controller-model-modal *ngIf="modal" (getControllerModel)="getControllerModel.emit()" [manufacturers]="manufacturers" [cModel]="cModel" (changeModal)="changeModal()"></my-org-controller-model-modal>
+</ng-container>
+<ng-container *ngIf="sStatus">
+  <div class="channel-items">
+    <span class="channel__item">{{sStatus?.code}}</span>
+    <span class="channel__item">{{sStatus?.description}}</span>
+    <span class="channel__item">
+      <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+      <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeSensorStatus(sStatus.id)">
+    </span>
+  </div>
+  <my-org-sensor-status-modal *ngIf="modal" [sStatus]="sStatus" (getSensorStatus)="getSensorStatus.emit()" (changeModal)="changeModal()"></my-org-sensor-status-modal>
+</ng-container>
+<ng-container *ngIf="cStatus">
+  <div class="channel-items">
+    <span class="channel__item">{{cStatus?.code}}</span>
+    <span class="channel__item">{{cStatus?.description}}</span>
+    <span class="channel__item">
+      <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+      <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeControllerStatus(cStatus.id)">
+    </span>
+  </div>
+  <my-org-controller-status-modal *ngIf="modal" [cStatus]="cStatus" (getControllerStatus)="getControllerStatus.emit()" (changeModal)="changeModal()"></my-org-controller-status-modal>
+</ng-container>
+<ng-container *ngIf="cvStatus">
+  <div class="channel-items">
+    <span class="channel__item">{{cvStatus?.code}}</span>
+    <span class="channel__item">{{cvStatus?.description}}</span>
+    <span class="channel__item">
+      <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+      <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeChannelValueStatus(cvStatus.id)">
+    </span>
+  </div>
+  <my-org-channel-value-status-modal *ngIf="modal" [cvStatus]="cvStatus" (getChannelValueStatus)="getChannelValueStatus.emit()" (changeModal)="changeModal()"></my-org-channel-value-status-modal>
+</ng-container>
+<ng-container *ngIf="manufacturer">
+  <div class="channel-items">
+    <span class="channel__item">{{manufacturer?.name}}</span>
+    <span class="channel__item">{{countriesData?.name}}</span>
+    <span class="channel__item">{{manufacturer?.email}}</span>
+    <span class="channel__item">{{manufacturer?.note}}</span>
+    <span class="channel__item">{{manufacturer?.website}}</span>
+    <span class="channel__item"><img [src]="manufacturer?.logo" [alt]="manufacturer?.logo"></span>
+    <span class="channel__item">
+      <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+      <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeManufacturer(manufacturer.id)">
+    </span>
+  </div>
+  <my-org-manufacturer-modal *ngIf="modal" [countries]="countries" [manufacturer]="manufacturer" (getManufacturer)="getManufacturer.emit()" (changeModal)="changeModal()"></my-org-manufacturer-modal>
+</ng-container>
+<ng-container *ngIf="country">
+  <div class="channel-items">
+    <span class="channel__item">{{country?.name}}</span>
+    <span class="channel__item">{{country?.code}}</span>
+    <span class="channel__item">
+      <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+      <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeCountry(country.id)">
+    </span>
+  </div>
+  <my-org-country-modal *ngIf="modal" [country]="country" (getCountry)="getCountry.emit()" (changeModal)="changeModal()"></my-org-country-modal>
+</ng-container>

@@ -1,0 +1,251 @@
+
+.page-modal {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 90px;
+
+  .overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #121C36;
+    opacity: 0;
+    z-index: -10;
+    transition: all .3s ease-in-out;
+  }
+
+  &.show {
+    z-index: 10;
+
+    .overlay {
+      opacity: .8;
+      z-index: 2;
+    }
+
+    .form {
+      transform: translateY(0vh);
+
+      .overflow-content {
+        max-height: 60vh;
+        overflow: auto;
+      }
+    }
+  }
+
+  .form {
+    background: #192953;
+    position: relative;
+    z-index: 9;
+    border-radius: 10px;
+    padding: 40px 50px;
+    padding-bottom: 30px;
+    width: 450px;
+    transform: translateY(-100vh);
+    transition: all .3s ease-in-out;
+
+    .form-btns {
+      display: flex;
+      justify-content: space-between;
+
+      .btn {
+        margin: 0;
+        width: 165px;
+      }
+    }
+  }
+
+  .header {
+    font-family: PT Sans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 28px;
+
+    color: #FFFFFF;
+
+    margin-top: 0;;
+    margin-bottom: 24px;
+  }
+
+  .label-form {
+    margin-bottom: 30px;
+
+    label {
+      margin-bottom: 10px;
+    }
+
+    input, select {
+      padding: 10px 25px;
+      font-family: 'PT Sans';
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 16px;
+      height: 40px;
+      border: none;
+      background: #121C36;
+      /* identical to box height */
+
+
+      color: #FFFFFF;
+    }
+
+    select.active {
+      background: #17A750;
+    }
+
+    select.inactive {
+      background: #7D0F1E;
+    }
+
+    label {
+      font-family: PT Sans;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 23px;
+
+      color: #FFFFFF;
+    }
+  }
+
+  .close {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+  }
+
+  .form h2 {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 18px;
+  }
+}
+
+
+.box {
+  margin-bottom: 20px;
+
+  input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+
+    &+label {
+      color: #fff;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      cursor: pointer;
+      overflow: hidden;
+      border: 1px solid #D6D7D9;
+      box-sizing: border-box;
+      border-radius: 5px;
+      display: block;
+      flex: 1;
+      height: 50px;
+      line-height: 50px;
+      padding: 0 20px;
+      text-align: center;
+
+      svg {
+        width: 1em;
+        height: 1em;
+        vertical-align: middle;
+        fill: currentColor;
+        margin-top: -0.25em;
+        margin-right: 0.25em;
+      }
+
+      span {
+        margin-left: 5px;
+        font-weight: 600;
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+.box {
+  position: relative;
+  display: flex;
+  img {
+    left: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 6px;
+  }
+  .img-preview {
+    width: 50px;
+    margin-left: 5px;
+    position: relative;
+  }
+}
+
+.delete-img {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000a6;
+  border-radius: 5px;
+  cursor: pointer;
+  opacity: 0;
+  transition: all .3s ease-in-out;
+}
+
+.delete-img:hover {
+  opacity: 1;
+}
+
+.btn {
+  border-radius: 5px;
+  display: inline-block;
+  cursor: pointer;
+  background: #2B3B64;
+  border: 1px solid #4980FF;
+  text-align: center;
+  padding: 10px 15px;
+  color: #fff;
+  margin: 10px;
+  font-size: 14px;
+
+  &.primary {
+    border-color: #4980FF;
+    background: #4980FF;
+    color: #fff;
+  }
+
+  &.red {
+    border-color: #f44336;
+    background: #f44336;
+    color: #fff;
+
+    &:hover {
+      background: #f44336;
+    }
+  }
+}
+
+input {
+  background: #121C36;
+  border: none;
+  color: #fff;
+}

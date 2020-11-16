@@ -1,0 +1,56 @@
+@import '../sensor-modal/sensor-modal.component.scss';
+.channel {
+  &__item {
+    &:nth-child(2) {
+      width: 727px;
+    }
+  }
+  &-status {
+    display: flex;
+    align-items: flex-end;
+    height: 61px;
+  }
+}
+label {
+  font-size: 18px;
+  line-height: 23px;
+  margin-left: 19px;
+}
+.label {
+  display: flex;
+  align-items: center;
+  margin: 0 0 10px 0;
+}
+.checkbox {
+  width: 20px;
+}
+.radio {
+  max-width: 20px;
+  margin-bottom: 0 !important;
+}
+.inner {
+  align-items: flex-end;
+  .cancel {
+    padding: 10px;
+    height: 40px;
+    margin: 0 20px;
+  }
+}
+.radio-inner {
+  align-items: center;
+  input {
+    &:first-child {
+      margin-bottom: 20px;
+    }
+  }
+}
+.btns {
+  margin-top: 20px;
+}
+.warning {
+  background: #FFBB0C;
+  color: #000;
+}
+.critical {
+  background: #7D0F1E;
+}

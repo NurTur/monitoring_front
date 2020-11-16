@@ -1,0 +1,20 @@
+@import '../login/login.component.scss';
+h2 {
+    font-size: 16px;
+    line-height: 21px;
+    font-weight: 300;
+    b {
+        font-weight: 700;
+    }
+}
+.label-flex {
+    display: flex;
+    label {
+        margin: 0 62px 0 0;
+        font-size: 16px;
+        font-weight: 700;
+    }
+    input {
+        width: 133px;
+    }
+}

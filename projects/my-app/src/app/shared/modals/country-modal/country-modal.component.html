@@ -1,0 +1,18 @@
+<div class="wrapper-modal">
+  <div class="wrapper">
+    <div class="close" (click)="changeModal.emit()"></div>
+    <h1>Страны</h1>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Название</p>
+        <input type="text" [(ngModel)]="name">
+        <p class="label">Код</p>
+        <input type="text" [(ngModel)]="code">
+      </div>
+    </div>
+    <div class="btns">
+      <button class="save" (click)="country ? save(true) : save(false)">Сохранить</button>
+      <button class="cancel" (click)="changeModal.emit()">Отмена</button>
+    </div>
+  </div>
+</div>

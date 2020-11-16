@@ -1,0 +1,44 @@
+image: git-registry.globerce.com/docker-images/node:12.13.1
+
+stages:
+  - install
+  - build
+
+before_script:
+  - export TAG="1.1.0-$CI_PIPELINE_ID-$(echo $CI_BUILD_REF | cut -c1-7)"
+  - export FULL_VERSION="1.1.0-$CI_PIPELINE_ID-$(echo $CI_BUILD_REF | cut -c1-7)"
+
+npm:
+  stage: install
+  tags:
+    - npm
+
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - dist/my-app
+
+  artifacts:
+    expire_in: 7 day
+    paths:
+      - dist/my-app
+
+  script:
+    - npm install
+    - npm run-script build
+
+docker-image:
+  stage: build
+  image: docker:latest
+  tags:
+    - docker
+  script:
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker build -t $CI_PROJECT_PATH .
+    - docker tag $CI_PROJECT_PATH $CI_REGISTRY_IMAGE
+    - docker tag $CI_PROJECT_PATH $CI_REGISTRY_IMAGE:$TAG
+    - docker push $CI_REGISTRY_IMAGE
+    - docker push $CI_REGISTRY_IMAGE:$TAG
+    - docker rmi $CI_PROJECT_PATH
+    - docker rmi $CI_REGISTRY_IMAGE
+    - docker rmi $CI_REGISTRY_IMAGE:$TAG

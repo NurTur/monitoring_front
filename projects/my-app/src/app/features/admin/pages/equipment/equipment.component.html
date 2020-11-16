@@ -1,0 +1,154 @@
+<div class="equipment">
+  <div class="equipment-sidebar">
+    <h3>Оборудование</h3>
+    <div class="equipment-items">
+      <p class="equipment__item" [class.active]="isContollers" (click)="changeEquipment('controllers')">Контроллеры</p>
+      <p class="equipment__item" [class.active]="isSensors" (click)="changeEquipment('sensors')">Датчики</p>
+      <p class="equipment__item" [class.active]="isMeasuringChannel" (click)="changeEquipment('measuring-channels')">Измерительные каналы</p>
+			<p class="equipment__item" [class.active]="isValueChannel" (click)="changeEquipment('valueChannels')">Значения каналов</p>
+			<p class="equipment__item" [class.active]="isTag" (click)="changeEquipment('tags')">Теги</p>
+    </div>
+	</div>
+	<div class="equipment-wrap">
+		<div *ngIf="!isContollers && !isSensors && !isMeasuringChannel && !isValueChannel && !isTag" class="unselect">
+			<img src="assets/img/box.svg" alt="">
+			<p>Выберите нужный раздел в меню слева</p>
+		</div>
+		<ng-container *ngIf="isContollers">
+			<div class="equipment-inner">
+				<h3>Контроллеры</h3>
+				<button class="new" (click)="changeModal('controller')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items">
+						<span class="channel__item">Название в системе</span>
+						<span class="channel__item">Модель</span>
+						<span class="channel__item">Состояние</span>
+						<span class="channel__item">Серийный номер</span>
+						<span class="channel__item">Проект</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let controller of controllers">
+							<my-org-channel-tabel [listProject]="listProject" [projectName]="projectName" [controller]="controller" [models]="models" (getControllerList)="getControllerList()"></my-org-channel-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isSensors">
+			<div class="equipment-inner">
+				<h3>Датчики</h3>
+				<button class="new" (click)="changeModal('sensor')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items">
+						<span class="channel__item">Проектный номер</span>
+						<span class="channel__item">Тип датчика</span>
+						<span class="channel__item">Состояние</span>
+						<span class="channel__item">Название в системе</span>
+						<span class="channel__item">Модель</span>
+						<span class="channel__item">Серийный номер</span>
+						<span class="channel__item">Контроллер</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let sensor of sensors">
+							<my-org-channel-tabel [listProject]="listProject" [controllers]="controllers" [states]="states" [sensors]="sensors" [projectName]="projectName" [sensor]="sensor" [sensorModels]="sensorModels" (getSensors)="getSensors()"></my-org-channel-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isMeasuringChannel">
+			<div class="equipment-inner">
+				<h3>Измерительные каналы</h3>
+				<button class="new" (click)="changeModal('measuring-channel')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items">
+						<span class="channel__item">Код канала</span>
+						<span class="channel__item">Датчик</span>
+						<span class="channel__item">Тип канала</span>
+						<span class="channel__item">Статус</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let channel of channels">
+							<my-org-channel-tabel [sensors]="sensors" [channel]="channel" [channelsType]="channelsType" (getChannelsList)="getChannelsList()"></my-org-channel-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isValueChannel">
+			<div class="equipment-inner">
+				<h3>Значения каналов</h3>
+			</div>
+			<div class="channel-inner">
+				<p class="period">За период</p>
+				<div class="channel-period">
+					<input type="text"
+									class="channel__date"
+									[matDatepicker]="s"
+									#start="ngModel"
+									[(ngModel)]="startDate"
+									name="start">
+					<mat-datepicker-toggle matSuffix [for]="s"></mat-datepicker-toggle>
+					<mat-datepicker #s></mat-datepicker>
+				</div>
+					<input type="text"
+									class="channel__date"
+									[matDatepicker]="e"
+									#end="ngModel"
+									[(ngModel)]="endDate"
+									name="endDate">
+					<mat-datepicker-toggle matSuffix [for]="e"></mat-datepicker-toggle>
+					<mat-datepicker #e></mat-datepicker>
+					<button class="send__date" (click)="changeDate(start, end)">Отпраить</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items">
+						<span class="channel__item">Канал</span>
+						<span class="channel__item">Дата и время</span>
+						<span class="channel__item">Значение</span>
+						<span class="channel__item">Статус</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let channelValue of channelsValue">
+							<my-org-channel-tabel [channels]="channels" [channelValue]="channelValue"></my-org-channel-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="isTag">
+			<div class="equipment-inner">
+				<h3>Теги</h3>
+				<button class="new" (click)="changeModal('tag')">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items">
+						<span class="channel__item">Код тега</span>
+						<span class="channel__item">Измерительный канал</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let tag of tags">
+							<my-org-channel-tabel [channels]="channels" [tag]="tag" (getTags)="getTags()"></my-org-channel-tabel>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+</div>
+<my-org-tag-modal *ngIf="tag" [channels]="channels" (getTags)="getTags()" (changeModal)="changeModal('tag')"></my-org-tag-modal>
+<my-org-controller-modal *ngIf="controllerModal" (getControllerList)="getControllerList()" [projectName]="projectName" [listProject]="listProject" [models]="models" (changeModal)="changeModal('controller')"></my-org-controller-modal>
+<my-org-sensor-modal *ngIf="sensorModal" (getSensors)="getSensors()" [states]="states" [controllers]="controllers" [sensors]="sensors" [projectName]="projectName" [listProject]="listProject" [sensorModels]="sensorModels" (changeModal)="changeModal('sensor')"></my-org-sensor-modal>
+<my-org-measuring-channel-modal *ngIf="measuringChannelModal" [channelsType]="channelsType" [sensors]="sensors" (getChannelsList)="getChannelsList()" (changeModal)="changeModal('measuring-channel')"></my-org-measuring-channel-modal>

@@ -1,0 +1,41 @@
+<div class="wrapper-modal">
+  <div class="wrapper">
+    <div class="close" (click)="changeModal.emit()"></div>
+    <h1>Тег</h1>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Код</p>
+        <input type="text" [(ngModel)]="code">
+      </div>
+      <div class="inputs">
+        <p class="label">Канал</p>
+        <select [(ngModel)]="channel">
+          <option [value]="c.id" *ngFor="let c of channels">{{c?.code}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="inner radio-inner">
+      <div class="inputs" style="max-width:240px">
+        <div class="label">
+          <input name="value" id="formula" class="radio" type="radio" (change)="changeValue('formula')">
+          <label for="formula">Использовать формулу</label>
+        </div>
+        <div class="label">
+          <input name="value" id="sql" class="radio" type="radio" (change)="changeValue('sql')">
+          <label for="sql">Использовать SQL функцию</label>
+        </div>
+      </div>
+      <div class="inputs">
+        <input type="text" [disabled]="isFormulaValue" [(ngModel)]="formula">
+        <input type="text" [disabled]="isSqlValue" [(ngModel)]="sqlProc">
+      </div>
+    </div>
+    <div class="label">
+      <input name="value" [checked]="true" id="none" class="radio" type="radio" (change)="changeValue()">
+      <label for="none">Не пересчитаывать значиения канала</label>
+    </div>
+    <div class="btns">
+      <button class="save" (click)="tag ? save(true) : save(false)">Сохранить</button>
+      <button class="cancel" (click)="changeModal.emit()">Отмена</button>
+    </div>
+</div>

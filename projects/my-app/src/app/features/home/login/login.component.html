@@ -1,0 +1,27 @@
+<div class="card">
+	<div class="card-first">
+		<img src="assets/img/logo.svg" width="120" alt="">		
+		<div class="version">Версия: 1.0.0.7</div>
+	</div>
+	<div class="card-second">
+		<h1>Авторизация в системе</h1>
+		<form [formGroup]="signInForm" (ngSubmit)="login()">
+			<div class="label-form">
+				<label for="name">Логин</label>
+				<input type="text" required="required" formControlName="email" name="email">
+				<div class="error">{{signInForm.get('email')?.errors?.error}}</div>
+			</div>
+			<div class="label-form">
+				<label for="name">Пароль</label>
+				<input type="password" required="required" formControlName="password" name="password">
+				<div class="error">{{signInForm.get('password')?.errors?.error}}</div>
+				<a [routerLink]="['/reset']" class="link reset-link">Забыли пароль?</a>
+			</div>
+			<div class="btns">
+				<button type="submit">Вход в систему</button>
+				<div [routerLink]="['/main']">Отмена</div>
+			</div>
+			<div class="error non-field-error">{{errorMessage}}</div>
+		</form>
+	</div>
+</div>

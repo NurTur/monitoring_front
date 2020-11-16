@@ -1,0 +1,169 @@
+<div class="list" *ngIf="project">
+	<div class="list-page">
+		<div class="list-project">
+			<div class="list-wrap">
+				<h2>{{ 'HEADER.ACTIVE' | translate }} - {{project?.data?.name}}</h2>
+				<div class="dropdown" ngDropdown>
+					<button ngDropdownControl>
+						<img src="assets/img/dots.svg" alt="">
+					</button>
+					<div ngDropdownContent dropdownClass="slide-fade">
+						<ul>
+							<li><a (click)="editProjectModal=true">Настройки</a></li>
+							<li><a>Создать бэкап</a></li>
+							<li><a>Восстановить из бэкапа</a></li>
+							<li><a>Экспорт проекта</a></li>
+							<li><a>Импорт проекта</a></li>
+							<li><a style="color: #FF0000" (click)="deleteProject()">Удалить проект</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<ng-container *ngIf="pages">
+				<div *ngIf="pages[0]?.data?.image" [ngStyle]="{'background':'#fff url('+pages[0]?.data?.image+') no-repeat center center'}" class="list-img"></div>
+				<div *ngIf="!pages[0]?.data?.image" class="list-img">Нет мнемосхем</div>
+			</ng-container>
+			<div class="list-inner">
+				<div>
+					<p class="list__text">{{ 'PROJECTS.CARD.STATUS' | translate }}</p>
+					<p class="list__text">{{ 'PROJECTS.CARD.CREATE_DATE' | translate }}</p>
+					<p class="list__text">{{ 'PROJECTS.CARD.UPDATE_DATE' | translate }}</p>
+				</div>
+				<div>
+					<div class="inactive list-icons" [class.active]="project?.data?.is_active">
+						<img src="assets/img/check.svg" alt="">
+						<span>{{ project?.data?.is_active ? 'Активный ' : 'Неактивный' }}</span>
+					</div>
+					<div class="list-icons">
+						<img src="assets/img/calendar-blue.svg" alt="">
+						<span>{{ project?.created_at | date: 'dd.MM.yyyy' }}</span>
+					</div>
+					<div class="list-icons">
+						<img src="assets/img/calendar-blue.svg" alt="">
+						<span>{{ project?.updated_at | date: 'dd.MM.yyyy' }}</span>
+					</div>
+				</div>
+				<div class="list-btns">
+					<button class="list__btn" [routerLink]="['/projects/show/', project?.id]"><img src="assets/img/monitor-white.svg" alt="">{{ 'PROJECTS.CARD.VIEW' | translate }}</button>
+					<button class="list__btn" [routerLink]="['/projects/edit/', project?.id]"><img src="assets/img/edit-white.svg" alt="">Редактор мнемосхем</button>
+				</div>
+			</div>
+		</div>
+		<div class="list-equipment">
+			<h2 class="route" [routerLink]="'/equipment/controllers/' + id">Оборудование</h2>
+			<div class="list-parent">
+				<div class="list-child" style="width:45%">
+					<h3 class="route" [routerLink]="'/equipment/controllers/' + id">Контроллеры</h3>
+					<div class="list-child-wrap">
+						<div class="list-child-inner">
+							<p>Всего</p>
+							<h4>{{metrics?.controllers?.overall}}</h4>
+						</div>
+						<div class="list-child-inner">
+							<p>Без подл. датчиков</p>
+							<h4 class="WRANING">{{metrics?.controllers?.no_sensors}}</h4>
+						</div>
+					</div>
+				</div>
+				<div class="list-child">
+					<h3 class="route" [routerLink]="'/equipment/sensors/' + id">Датчики</h3>
+					<div class="list-child-wrap">
+						<div class="list-child-inner">
+							<p>Всего</p>
+							<h4>{{metrics?.sensors?.overall}}</h4>
+						</div>
+						<div class="list-child-inner">
+							<p>Аварийный</p>
+							<h4 class="CRITICAL">{{metrics?.sensors?.critical}}</h4>
+						</div>
+						<div class="list-child-inner">
+							<p>Предупредительные</p>
+							<h4 class="WRANING">{{metrics?.sensors?.warning}}</h4>
+						</div>
+						<div class="list-child-inner">
+							<p>Без контроллера</p>
+							<h4 class="DEFAULT">{{metrics?.sensors?.no_channels}}</h4>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="list-child" style="margin:0">
+				<h3 class="route" [routerLink]="'/equipment/measuring-channels/' + id">Каналы</h3>
+				<div class="list-child-wrap">
+					<div class="list-child-inner">
+						<p>Всего</p>
+						<h4>{{metrics?.channels?.overall}}</h4>
+					</div>
+					<div class="list-child-inner">
+						<p>Аварийный</p>
+						<h4 class="CRITICAL">{{metrics?.channels?.critical}}</h4>
+					</div>
+					<div class="list-child-inner">
+						<p>Предупредительные</p>
+						<h4 class="WRANING">{{metrics?.channels?.warning}}</h4>
+					</div>
+					<div class="list-child-inner">
+						<p>Не на связи</p>
+						<h4 class="DEFAULT">0</h4>
+					</div>
+					<div class="list-child-inner">
+						<p>NaN</p>
+						<h4 class="DEFAULT">0</h4>
+					</div>
+					<div class="list-child-inner">
+						<p>Нулевое значение</p>
+						<h4 class="DEFAULT">0</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="display: flex;">
+		<div class="list-pages">
+			<div class="counter">
+				<h3>Количество мнемосхем</h3>
+				<div class="count">{{pages?.length}}</div>
+			</div>
+			<div class="list-pages-wrap">
+				<div class="list-pages-page" *ngFor="let page of pages" [routerLink]="['/projects/show/', id]" (click)="changePage(page)">
+					<div class="list-pages-page-img" [ngStyle]="{'background':'#fff url('+page?.data?.image+') no-repeat center center'}"></div>
+					<p>{{page?.data?.name}}</p>
+				</div>
+			</div>
+		</div>
+		<div class="list-chart">
+			<h2 class="route" [routerLink]="'/notifications/' + id">Оповещения</h2>
+			<div class="chart-wrapper">
+				<ngx-charts-pie-chart
+        [view]="[179, 179]"
+        [results]="data"
+        [legend]="false"
+        [explodeSlices]="false"
+				[doughnut]="true"
+				[scheme]="scheme">
+      </ngx-charts-pie-chart>
+				<div class="all">{{metrics?.notifications?.overall}}</div>
+				<div class="list-chart-data">
+					<div class="circle-wrap">
+						<div class="circle" style="background-color: #17A750"></div>
+						<span>Подтверждено</span>
+					</div>
+					<div class="circle-wrap">
+						<div class="circle" style="background-color: #FFBB0C"></div>
+						<span>Предупреждение</span>
+					</div>
+					<div class="circle-wrap">
+						<div class="circle" style="background-color: #5977C7"></div>
+						<span>Информационные</span>
+					</div>
+					<div class="circle-wrap">
+						<div class="circle" style="background-color: #FF0000"></div>
+						<span>Не подтверждено</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- <my-org-loader *ngIf="loader"></my-org-loader> -->
+<my-org-create-project-modal *ngIf="editProjectModal" (closeModal)="editProjectModal=false" [projectClient]="project?.data?.client?.id" [projectActive]="project.data.is_active" [editPage]="true" [projectName]="project.data.name" [projectID]="id" ></my-org-create-project-modal>

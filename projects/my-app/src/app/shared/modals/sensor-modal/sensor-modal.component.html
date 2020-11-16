@@ -1,0 +1,93 @@
+<div class="wrapper-modal">
+  <div class="wrapper">
+    <div class="close" (click)="changeModal.emit()"></div>
+    <h1 *ngIf="!sensor">Создать датчик</h1>
+    <h1 *ngIf="sensor">Редактировать датчик</h1>
+    <div class="wrap">
+      <div class="inputs">
+        <p class="label">Название</p>
+        <input type="text" [(ngModel)]="name">
+        <p class="label">Модель</p>
+        <select name="model" [(ngModel)]="selectedModel" (change)="changeModel($event.target.value)">
+          <option [value]="model.id" *ngFor="let model of sensorModels">{{model?.data?.name}}</option>
+        </select>
+        <div class="inner">
+          <div>
+            <p class="label">Документы</p>
+            <div class="docs">
+              <p class="label">
+                <a *ngIf="doc" (click)="downloadFile(doc, 'sensor')">Скачать документ</a>
+              </p>
+            </div>
+          </div>
+          <div>
+            <p class="label">Изображение модели</p>
+            <img class="img" [src]="imgModel" [alt]="imgModel">
+          </div>
+        </div>
+      </div>
+      <div class="inputs">
+        <p class="label">Проект</p>
+        <select name="projects" [(ngModel)]="projectName.id" (change)="changeProject($event.target.value)">
+          <option [value]="project.id" *ngFor="let project of listProject">{{project?.data?.name}}</option>
+        </select>
+        <div class="inner">
+          <div style="margin-right: 20px;">
+            <p class="label">Серийный номер</p>
+            <input type="text" [(ngModel)]="serialNumber">
+          </div>
+          <div>
+            <p class="label">Проектный номер</p>
+            <input type="text" [(ngModel)]="projectNumber">
+          </div>
+        </div>
+        <p class="label">Фото установленного датчика</p>
+        <div class="photo-wrap" *ngIf="imageSrc">
+          <label for="img"><img [src]="imageSrc" [alt]="imageSrc" class="photo"></label>
+          <button class="trash-btn" (click)="deletePhoto()"><img src="assets/img/trash.svg" alt=""></button>
+        </div>
+        <label class="add-img" for="img" *ngIf="!imageSrc"><div>Добавить фото</div></label>
+        <input type="file" id="img" (change)="changePhoto($event)">
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="inputs">
+        <div class="inner">
+          <div>
+            <p class="label">Состояние</p>
+            <select name="status" [(ngModel)]="status" (change)="changeStatus($event.target.value)">
+              <option [value]="state.id" *ngFor="let state of states">
+                <ng-container *ngIf="state.code === 'ACTIVE'; else inactive">Активный</ng-container>
+                <ng-template #inactive>Неактивный</ng-template>
+              </option>
+            </select>
+          </div>
+          <div>
+            <p class="label">Коэффицент</p>
+            <input type="text" [(ngModel)]="koefficient">
+          </div>
+          <div>
+            <p class="label">Контроллер</p>
+            <select name="controller" [(ngModel)]="selectController" (change)="changeController($event.target.value)">
+              <option *ngFor="let c of controllers" [value]="c.id">{{c?.data?.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="channel" *ngIf="sensor?.channels">
+      <p class="label">Измерительные каналы</p>
+      <div class="channel-table" style="height:100%">
+        <div class="channel-items">
+          <span class="channel__item">Канал</span>
+          <span class="channel__item {{channel.last_channel_value.state}}" *ngFor="let channel of sensor.channels">{{channel?.code}}</span>
+        </div>
+      </div>
+    </div>
+    <p class="label" *ngIf="!sensor?.channels">Нет привязанных каналов</p>
+    <div class="btns">
+      <button class="save" (click)="sensor ? save() : onSubmit()">Создать</button>
+      <button class="cancel" (click)="changeModal.emit()">Отмена</button>
+    </div>
+  </div>
+</div>

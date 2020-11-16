@@ -1,0 +1,11 @@
+<div class="pagination">
+  <div class="pagination-items">
+    <button class="pagination__item" (click)="prevPage()" [disabled]="filterForm.page === 1"><img class="left" src="/assets/img/arrow-down-white.svg" alt=""></button>
+    <button class="pagination__item" (click)="changePage(1)" *ngIf="showPointA">1</button>
+    <button class="pagination__item" (click)="jumpPage(false)" *ngIf="showPointA">...</button>
+    <button class="pagination__item" (click)="changePage(page)" *ngFor="let page of pageNumbers" [class.selected]="filterForm.page === page">{{page}}</button>
+    <button class="pagination__item" (click)="jumpPage(true)" *ngIf="showPointB">...</button>
+    <button class="pagination__item" (click)="changePage(pagesCount)" [class.selected]="filterForm.page === pagesCount">{{pagesCount}}</button>
+    <button class="pagination__item" (click)="nextPage()" [disabled]="filterForm.page === pagesCount"><img class="right" src="/assets/img/arrow-down-white.svg" alt=""></button>
+  </div>
+</div>

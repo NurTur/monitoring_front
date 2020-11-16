@@ -1,0 +1,20 @@
+<div class="channel-items">
+  <span class="channel__item">{{client?.data?.name}}</span>
+  <span class="channel__item">
+    <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+    <img class="icon" src="assets/img/delete.svg" alt="" (click)="openDeleteModal()">
+  </span>
+  <my-org-client-modal *ngIf="modal" [client]="client" (getClients)="getClients.emit()" (changeModal)="changeModal()"></my-org-client-modal>
+</div>
+<div class="modal" *ngIf="deleteModal">
+	<div class="form narrow">
+		<h1>Удаление</h1>
+		<div class="inputs">
+			<label>Вы действительно хотите удалить {{client.data.name}}?</label>
+			<div class="form-btns">
+				<button class="btn-default" (click)="removeClient()">Да</button>
+				<button (click)="deleteModal = false">Отмена</button>
+			</div>
+		</div>
+	</div>
+</div>

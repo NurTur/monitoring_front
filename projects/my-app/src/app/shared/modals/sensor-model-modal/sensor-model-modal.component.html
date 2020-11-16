@@ -1,0 +1,36 @@
+<div class="wrapper-modal">
+  <div class="wrapper">
+    <div class="close" (click)="changeModal.emit()"></div>
+    <h1>Модель датчика</h1>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Название</p>
+        <input type="text" [(ngModel)]="model">
+        <p class="label">Тип датчика</p>
+        <select [(ngModel)]="type">
+          <option [value]="t.id" *ngFor="let t of sensorType">{{t?.data?.name}}</option>
+        </select>
+        <p class="label">Производитель</p>
+        <select [(ngModel)]="manufacturer">
+          <option [value]="m.id" *ngFor="let m of manufacturers">{{m?.name}}</option>
+        </select>
+      </div>
+      <div class="inputs">
+        <p class="label">Изображение</p>
+        <div class="photo-wrap" *ngIf="imageSrc">
+          <label for="img"><img [src]="imageSrc" [alt]="imageSrc" class="photo"></label>
+          <button class="trash-btn" (click)="deletePhoto()"><img src="assets/img/trash.svg" alt=""></button>
+        </div>
+        <label class="add-img" for="img" *ngIf="!imageSrc"><div>Добавить фото</div></label>
+        <input type="file" id="img" (change)="changePhoto($event, 'img')">
+      </div>
+      <div class="inputs">
+        <input type="file" (change)="changePhoto($event, 'file')">
+      </div>
+    </div>
+    <div class="btns">
+      <button class="save" (click)="sModel ? save(true) : save(false)">Сохранить</button>
+      <button class="cancel" (click)="changeModal.emit()">Отмена</button>
+    </div>
+  </div>
+</div>

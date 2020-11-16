@@ -1,0 +1,90 @@
+<div class="wrapper-modal">
+  <div class="wrapper">
+    <div class="close" (click)="changeModal.emit()"></div>
+    <h1>Измерительный канал</h1>
+    <div class="wrap">
+      <div class="inputs">
+        <p class="label">Датчик</p>
+        <select [(ngModel)]="selectedSensor" (change)="changeSensor($event.target.value)">
+          <option *ngFor="let sensor of sensors" [value]="sensor.id">{{sensor?.data?.project_number}}</option>
+        </select>
+      </div>
+      <div class="inputs">
+        <p class="label">Тип канала</p>
+        <select [(ngModel)]="type" (change)="changeChannelType($event.target.value)">
+          <option *ngFor="let channelType of channelsType" [value]="channelType.id">{{channelType?.data?.name}}</option>
+        </select>
+      </div>
+      <div class="channel-status">
+        <mat-checkbox [(ngModel)]="status">Статус канала</mat-checkbox>
+      </div>
+    </div>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Код канала</p>
+        <input type="text" [(ngModel)]="code">
+      </div>
+      <div class="inputs">
+        <p class="label">Формат на мнемосхеме</p>
+        <input type="text" [(ngModel)]="format">
+      </div>
+    </div>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Верхняя граница</p>
+        <input type="text" [(ngModel)]="up">
+      </div>
+      <div class="inputs">
+        <p class="label">Верхняя предупредительная</p>
+        <input type="text" class="warning" [(ngModel)]="upWarning">
+      </div>
+      <div class="inputs">
+        <p class="label">Верхняя аварийная</p>
+        <input type="text" class="critical" [(ngModel)]="upCritical">
+      </div>
+    </div>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Нижняя граница</p>
+        <input type="text" [(ngModel)]="down">
+      </div>
+      <div class="inputs">
+        <p class="label">Нижняя предупредительная</p>
+        <input type="text" class="warning" [(ngModel)]="downWarning">
+      </div>
+      <div class="inputs">
+        <p class="label">Нижняя аварийная</p>
+        <input type="text" class="critical" [(ngModel)]="downCritical">
+      </div>
+    </div>
+    <div class="inner">
+      <mat-checkbox [(ngModel)]="songWarning">Звук при предупреждениях</mat-checkbox>
+      <mat-checkbox [(ngModel)]="songCritical">Звук при авариях</mat-checkbox>
+      <mat-checkbox [(ngModel)]="delta">Дельта</mat-checkbox>
+      <mat-checkbox [(ngModel)]="control">Контроль канала</mat-checkbox>
+    </div>
+    <div class="inner radio-inner">
+      <div class="inputs" style="max-width:240px">
+        <div class="label">
+          <input name="value" id="formula" class="radio" type="radio" (change)="changeValue('formula')">
+          <label for="formula">Использовать формулу</label>
+        </div>
+        <div class="label">
+          <input name="value" id="sql" class="radio" type="radio" (change)="changeValue('sql')">
+          <label for="sql">Использовать SQL функцию</label>
+        </div>
+      </div>
+      <div class="inputs">
+        <input type="text" [disabled]="isFormulaValue" [(ngModel)]="formula">
+        <input type="text" [disabled]="isSqlValue" [(ngModel)]="sqlProc">
+      </div>
+    </div>
+    <div class="label">
+      <input name="value" [checked]="true" id="none" class="radio" type="radio" (change)="changeValue()">
+      <label for="none">Не пересчитаывать значиения канала</label>
+    </div>
+    <div class="btns">
+      <button class="save" (click)="channel ? save(true) : save(false)">Сохранить</button>
+      <button class="cancel" (click)="changeModal.emit()">Отмена</button>
+    </div>
+</div>

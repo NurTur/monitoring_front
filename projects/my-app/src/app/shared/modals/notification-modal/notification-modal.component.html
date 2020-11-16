@@ -1,0 +1,28 @@
+<div class="page-modal" [class.show]="modal">
+	<div class="overlay"></div>
+	<div class="form" *ngIf="selectedNotify">
+		<form>
+		<div class="close" (click)="closeModal.emit()"></div>
+		<h2>Квитировать оповещение</h2>
+		<div class="label-form">
+			<label for="">Текст оповещения</label>
+			<!-- <input class="{{ selectedNotify.data?.state }}" type="text" disabled="disabled" value="{{selectedNotify.data?.message}}"> -->
+			<div class="message {{ selectedNotify.data?.state }}">{{selectedNotify?.data?.message}}</div>
+		</div>
+		<div class="date-info">
+			<div>Получено: <span>{{ selectedNotify?.created_at | date : 'medium'}}</span></div>
+			<div>Прошло времени: <span>{{ returnDiffDate(selectedNotify?.created_at) }}</span></div>
+		</div>
+		<div class="label-form">
+			<label for="">Введите комментарий</label>
+			<textarea placeholder="Введите текст" [(ngModel)]="confirmMessage" name="confirmMessage"></textarea>
+		</div>
+		<div class="form-btns">
+			<button class="btn primary" (click)="save()" [disabled]="!confirmMessage">
+				Подтвердить
+			</button>
+			<div class="btn" (click)="closeModal.emit()">Отмена</div>
+		</div>
+		</form>
+	</div>
+</div>

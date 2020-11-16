@@ -1,0 +1,87 @@
+<ng-container *ngIf="controller">
+  <div class="channel-items">
+    <span class="channel__item">{{controller?.data?.name}}</span>
+    <span class="channel__item">{{modelData?.data?.name}}</span>
+    <span class="channel__item">
+      <ng-container *ngIf="controller?.data?.status === 'ACTIVE'; else inactive">Активный</ng-container>
+      <ng-template #inactive>Неактивный</ng-template>
+    </span>
+    <span class="channel__item">{{controller?.data?.serial_number}}</span>
+    <span class="channel__item">{{projectName?.data?.name}}</span>
+    <span class="channel__item">
+      <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+      <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeController(controller.id)">
+    </span>
+  </div>
+  <my-org-controller-modal *ngIf="controllerModal" [projectName]="projectName" [listProject]="listProject" (getControllerList)="getControllerList.emit()" [controller]="controller" [models]="models" (changeModal)="changeModal()"></my-org-controller-modal>
+</ng-container>
+<ng-container *ngIf="sensor">
+  <div class="values">
+    <div class="channel-items {{sensor?.status}}">
+      <span class="channel__item">{{sensor?.data?.project_number}}</span>
+      <span class="channel__item">
+        {{sensor.model?.type?.data?.name}}
+        <img class="channel__icon" *ngIf="sensor?.status === 'DEFAULT'" [src]="sensor?.model?.type?.data?.normal_state_icon" alt="">
+        <img class="channel__icon" *ngIf="sensor?.status === 'ZERO' || sensor?.status === 'NO_DATA' || sensor?.status === 'NAN'" [src]="sensor?.model?.type?.data?.no_data_icon" alt="">
+        <img class="channel__icon" *ngIf="sensor?.status === 'WARNING'" [src]="sensor?.model?.type?.data?.warning_state_icon" alt="">
+        <img class="channel__icon" *ngIf="sensor?.status === 'CRITICAL'" [src]="sensor?.model?.type?.data?.critical_state_icon" alt="">
+      </span>
+      <span class="channel__item">
+        <ng-container *ngIf="sensor?.state?.code === 'ACTIVE'; else inactive">Активный</ng-container>
+        <ng-template #inactive>Неактивный</ng-template>
+      </span>
+      <span class="channel__item">{{sensor?.name}}</span>
+      <span class="channel__item">{{sensor?.model?.data?.name}}</span>
+      <span class="channel__item">{{sensor?.data?.serial_number}}</span>
+      <span class="channel__item">{{sensor?.controller?.data?.name}}</span>
+      <span class="channel__item">
+        <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+        <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeSensor(sensor.id)">
+      </span>
+    </div>
+  </div>
+  <my-org-sensor-modal *ngIf="controllerModal" [states]="states" [controllers]="controllers" [sensors]="sensors" (getSensors)="getSensors.emit()" [projectName]="projectName" [listProject]="listProject" [sensor]="sensor" [sensorModels]="sensorModels" (changeModal)="changeModal()"></my-org-sensor-modal>
+</ng-container>
+<ng-container *ngIf="channel">
+  <div class="values">
+    <div class="channel-items {{channel?.last_channel_value?.state}}">
+      <span class="channel__item">{{channel?.code}}</span>
+      <span class="channel__item">{{channel?.sensor?.data?.project_number}} {{channel?.sensor?.model?.type?.data?.name}}</span>
+      <span class="channel__item">{{channelData?.data?.name}}</span>
+      <span class="channel__item">
+        <ng-container *ngIf="channel?.data?.is_active; else inactive">Активный</ng-container>
+        <ng-template #inactive>Неактивный</ng-template>
+      </span>
+      <span class="channel__item">
+        <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+        <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeChannel(channel.id)">
+      </span>
+    </div>
+  </div>
+  <my-org-measuring-channel-modal *ngIf="controllerModal" (getChannelsList)="getChannelsList.emit()" [channelsType]="channelsType" [channel]="channel" [sensors]="sensors" (changeModal)="changeModal()"></my-org-measuring-channel-modal>
+</ng-container>
+<ng-container *ngIf="channelValue">
+  <div class="values">
+    <div class="channel-items {{channelValue.data.state}}">
+      <span class="channel__item">{{channelValueCode?.code}}</span>
+      <span class="channel__item">{{channelValue?.datetime | date : 'dd.MM.yyyy hh:mm:ss'}}</span>
+      <span class="channel__item">{{channelValue?.data?.value}}</span>
+      <span class="channel__item">{{channelValue?.data?.state}}</span>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="tag">
+  <div class="channel-items">
+    <span class="channel__item">{{tag?.data?.code}}</span>
+    <span class="channel__item">{{tag?.channel?.code}}</span>
+    <!-- <span class="channel__item">
+      <ng-container *ngIf="channel?.data?.is_active; else inactive">Активный</ng-container>
+      <ng-template #inactive>Неактивный</ng-template>
+    </span> -->
+    <span class="channel__item">
+      <img class="icon" src="assets/img/edit-white.svg" alt="" (click)="changeModal()">
+      <img class="icon" src="assets/img/delete.svg" alt="" (click)="removeTag(tag.id)">
+    </span>
+  </div>
+  <my-org-tag-modal *ngIf="controllerModal" [tag]="tag" [channels]="channels" (getTags)="getTags.emit()" (changeModal)="changeModal()"></my-org-tag-modal>
+</ng-container>

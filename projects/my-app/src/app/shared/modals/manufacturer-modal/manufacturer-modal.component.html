@@ -1,0 +1,37 @@
+<div class="wrapper-modal">
+  <div class="wrapper">
+    <div class="close" (click)="changeModal.emit()"></div>
+    <h1>Производитель</h1>
+    <div class="inner">
+      <div class="inputs">
+        <p class="label">Название</p>
+        <input type="text" [(ngModel)]="name">
+        <p class="label">Страна</p>
+        <select [(ngModel)]="country">
+          <option [value]="c?.id" *ngFor="let c of countries">{{c?.name}}</option>
+        </select>
+      </div>
+      <div class="inputs">
+        <p class="label">Email</p>
+        <input type="text" [(ngModel)]="email">
+        <p class="label">Сайт</p>
+        <input type="text" [(ngModel)]="website">
+      </div>
+      <div class="inputs">
+        <p class="label">Описание</p>
+        <input type="text" [(ngModel)]="note">
+        <p class="label">Логотип</p>
+        <div class="photo-wrap" *ngIf="logo">
+          <label for="img"><img [src]="logo" [alt]="logo" class="photo"></label>
+          <button class="trash-btn" (click)="deletePhoto()"><img src="assets/img/trash.svg" alt=""></button>
+        </div>
+        <label class="add-img" for="img" *ngIf="!logo"><div>Добавить фото</div></label>
+        <input type="file" id="img" (change)="changePhoto($event)">
+      </div>
+    </div>
+    <div class="btns">
+      <button class="save" (click)="manufacturer ? save(true) : save(false)">Сохранить</button>
+      <button class="cancel" (click)="changeModal.emit()">Отмена</button>
+    </div>
+  </div>
+</div>

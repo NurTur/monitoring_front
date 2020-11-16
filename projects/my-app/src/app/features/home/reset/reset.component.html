@@ -1,0 +1,51 @@
+<div class="card">
+	<div class="card-first">
+		<img src="assets/img/logo.svg" width="120" alt="">		
+		<div class="version">Версия: 1.0.0.7</div>
+	</div>
+	<div class="card-second">
+		<h1 *ngIf="step === 'step1' || step === 'step2'">Сброс пароля</h1>
+		<h1 *ngIf="step ==='step3'">Установка нового пароля</h1>
+		<form *ngIf="step === 'step1'" [formGroup]="resetForm" (ngSubmit)="reset()">
+			<div class="label-form">
+				<label for="name">Введите свой e-mail</label>
+				<input type="text" required="required" formControlName="email">
+				<div class="error">{{resetForm.get('email')?.errors?.error}}</div>
+			</div>
+			<div class="btns">
+				<button type="submit" style="margin-right: 10px;">Сброс</button>
+				<button [routerLink]="['/login']">Отмена</button>
+			</div>
+			<div class="error non-field-error">{{errorMessage}}</div>
+		</form>
+	
+		<form *ngIf="step === 'step2'" [formGroup]="confirmForm" (ngSubmit)="confirm()">
+			<h2>На <b>{{ resetForm.value.email }}</b> было отправлено письмо с кодом.</h2>
+			<br>
+			<div class="label-form label-flex">
+				<label>Введите здесь полученный код:</label> 
+				<input type="text" formControlName="code" required="required">
+				<div class="error">{{confirmForm.get('code')?.errors?.error}}</div>
+			</div>
+			<div class="btns">
+				<button type="submit">Ок</button>
+				<button [routerLink]="['/login']">Отмена</button>
+			</div>
+		</form>
+	
+		<form *ngIf="step === 'step3'" [formGroup]="passwordForm" (ngSubmit)="password()">
+			<div class="label-form">
+				<label for="name">Пароль</label>
+				<input type="password" required="required" formControlName="new" name="new">
+			</div>
+			<div class="label-form">
+				<label for="name">Повторите пароль</label>
+				<input type="password" required="required" formControlName="repeat" name="repeat">
+			</div>
+			<div class="btns">
+				<button type="submit" class="btn">Сменить пароль</button>
+				<button [routerLink]="['/login']">Отмена</button>
+			</div>
+		</form>
+	</div>
+</div>

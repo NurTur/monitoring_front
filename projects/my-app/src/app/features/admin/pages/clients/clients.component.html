@@ -1,0 +1,29 @@
+<div class="directory">
+  <div class="directory-sidebar">
+    <div class="directory-items">
+      <p class="directory__item active">Клиенты</p>
+    </div>
+	</div>
+	<div class="directory-wrap">
+		<div class="controller">
+			<div class="directory-inner">
+				<h3>Клиенты</h3>
+				<button class="new" (click)="changeModal()">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">Название клиента</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<ng-container *ngFor="let client of clients">
+							<my-org-client-table [client]="client" (getClients)="getClients()"></my-org-client-table>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<my-org-client-modal *ngIf="modal" (changeModal)="changeModal()" (getClients)="getClients()"></my-org-client-modal>

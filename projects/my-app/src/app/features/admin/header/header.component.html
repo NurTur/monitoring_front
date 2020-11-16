@@ -1,0 +1,158 @@
+<header>
+	<div class="container">
+		<div class="left">
+			<ng-container *ngIf="listProject.length !== 0">
+				<a *ngIf="id" [routerLink]="'/projects/' + id" class="logo">
+					<img src="assets/img/logo-small.svg" alt="">
+				</a>
+				<a *ngIf="!id" [routerLink]="'/projects/' + listProject[0].id" class="logo">
+					<img src="assets/img/logo-small.svg" alt="">
+				</a>
+			</ng-container>
+			<a *ngIf="listProject.length === 0" class="logo">
+				<img src="assets/img/logo-small.svg" alt="">
+			</a>
+		</div>
+		<ng-container *ngIf="!notProject">
+			<div class="select-project">
+				<p>{{ 'HEADER.ACTIVE' | translate }}:</p>
+				<div class="change-project">
+					<div class="show" [class.open]="showDropdown" (click)="changeDropdown('show')">
+						<p> <ng-container *ngIf="projectName">{{projectName}}</ng-container></p>
+						<div class="show-dropdown">
+							<div *ngFor="let item of listProject" class="show-dropdown-wrap" (click)="selectProject(item.id)">
+								<span [class.active]="projectName === item?.data?.name">{{ item?.data?.name }}</span>
+							</div>
+							<div class="show-dropdown-wrap create" style="color: #4980FF" (click)="createProject=true">
+								<span>Создать проект</span>
+								<span>+</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<ng-container *ngIf="projectName !== 'Выберите проект'">
+				<div class="change-project">
+					<div class="show" [class.open]="projectDropdow" (click)="changeDropdown('project')">
+						<img src="assets/img/{{stateIcon}}.svg" alt="">
+						<p>{{stateTitle}}</p>
+						<div class="show-dropdown">
+							<div class="show-dropdown-wrap" [routerLink]="'/projects/' + id">
+								<img src="assets/img/dashboard.svg" alt="">
+								<span>Сводка по проекту</span>
+							</div>
+							<div class="show-dropdown-wrap" [routerLink]="'/projects/show/' + id">
+								<img src="assets/img/monitor.svg" alt="">
+								<span>Мониторинг</span>
+							</div>
+							<div class="show-dropdown-wrap" [routerLink]="'/projects/edit/' + id">
+								<img src="assets/img/edit-blue.svg" alt="">
+								<span>Редактор мнемосхем</span>
+							</div>
+							<div class="show-dropdown-wrap" [routerLink]="'/projects/graphic/' + id" *ngIf="false">
+								<img src="assets/img/graphic-blue.svg" alt="">
+								<span>Графики</span>
+							</div>
+							<div class="show-dropdown-wrap" [routerLink]="'/report/' + id">
+								<img src="assets/img/report-blue.svg" alt="">
+								<span>Отчеты</span>
+							</div>
+							<div class="show-dropdown-wrap" [routerLink]="'/notifications/' + id">
+								<img src="assets/img/notification-blue.svg" alt="">
+								<span>Оповещения</span>
+							</div>
+							<div class="show-dropdown-wrap" [routerLink]="'/equipment/controllers/' + id">
+								<img src="assets/img/equipment.svg" alt="">
+								<span>Оборудование</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="change-project" [class.open]="pageDropdown" (click)="changeDropdown('page')" *ngIf="(stateTitle === 'Мониторинг' || stateTitle === 'Редактор мнемосхем' || stateTitle === 'Графики') && selectedPage">
+					<div class="pages">
+						<p>{{selectedPage?.data?.name}}</p>
+						<div class="pages-dropdown">
+							<div class="page" *ngFor="let page of pages" [class.active]="selectedPage?.id === page?.id || selectedPage?.parent === page?.id" 
+								(click)="changeTab(page)">
+								<div class="pages-dropdown-edit">
+									<span>{{ page?.data?.name }}</span>
+									<div class="cntrls" *ngIf="stateTitle === 'Редактор мнемосхем'">
+										<div class="cntrls-wrap" title="Редактировать страницу" (click)="openModal(page)"><img src="assets/img/edit-white.svg" alt=""></div>
+										<!-- <div title="Создать подстраницу" (click)="openModal(item, true)"><img src="assets/img/arrow-add.svg" alt=""></div> -->
+										<div class="cntrls-wrap" title="Удалить страницу" (click)="deletePage(page)"><div class="delete"></div></div>
+									</div>
+								</div>
+							</div>
+							<div *ngIf="stateTitle === 'Редактор мнемосхем'" (click)="openModal()" class="page add"><span>Создать +</span></div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="stateTitle === 'Редактор мнемосхем' && !selectedPage" (click)="openModal()" class="add-btn">Создать +</div>
+			</ng-container>
+		</ng-container>
+		<!-- <label>
+			<select #langSelect (change)="translate.use(langSelect.value)">
+				<option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
+			</select>
+		</label> -->
+		<div class="header-right" [class.width]="nlist?.length !== 0">
+			<ng-container *ngIf="nlist?.length !== 0">
+				<div class="notifications" [class.open]="notifyDropdown" (click)="changeDropdown('notify')">
+					<div class="notification {{ state }}"><p>{{placeholder}}</p></div>
+					<div class="dropdown">
+						<div *ngFor="let notification of nlist" class="dropdown__item {{notification?.data?.state}}" (click)="changeCriteria(notification)">
+							<p>
+								[{{notification?.created_at | date: 'dd.MM.yyyy HH:mm:ss'}}] 
+								<ng-container *ngIf="notification.channel; else user">{{notification?.channel?.sensor}}</ng-container>
+								<ng-template #user>{{notification?.user}}</ng-template>
+							</p>
+						</div>
+					</div>
+				</div>
+				<button class="notification__btn" [disabled]="!selectedNotify" title="{{ selectedNotify ? '' : 'Выберите оповещение' }}" (click)="showModal()">
+					<img src="/assets/img/list.svg" alt="">
+				</button>
+			</ng-container>
+			<div class="user" [class.open]="settingsDropdown" (click)="changeDropdown('settings')" style="margin-right: 16px;">
+				<img src="assets/img/settings.svg" alt="">
+				<div class="user-dropdown">
+					<div class="user-dropdown-content">
+						<div class="item" routerLink="/directory">
+							<img src="assets/img/book.svg" alt="">
+							<span>Справочники</span>
+						</div>
+						<div class="item" routerLink="/users">
+							<img src="assets/img/user-blue.svg" alt="">
+							<span>Пользователи</span>
+						</div>
+						<div class="item" routerLink="/clients">
+							<img src="assets/img/clients.svg" alt="">
+							<span>Клиенты</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="user" [class.open]="userDropdown" (click)="changeDropdown('user')">
+				<img src="assets/img/user.svg" alt="">
+				<div class="user-dropdown" style="width: auto;">
+					<div class="user-dropdown-header">
+						<span>{{ 'HEADER.USER' | translate }}:</span> <b>{{ auth.getUser.email }}</b>
+					</div>
+					<div class="user-dropdown-content">
+						<div class="item" routerLink="/settings/reset">
+							<img src="assets/img/key.svg" alt="">
+							<span>{{ 'HEADER.CHANGE_PASSWORD' | translate }}</span>
+						</div>
+						<div class="item" (click)="auth.logout()">
+							<img src="assets/img/exit.svg" alt="">
+							<span>{{ 'HEADER.LOGOUT' | translate }}</span>
+						</div> 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<my-org-create-page-modal *ngIf="createEditModal" (changePageName)="changePageName($event)" (closeModal)="closeModal()" (updatePage)="updatePage()" (fileChange)="onFileChange($event)" (createPage)="createPage()" [editPage]="editPage" [imageSrc]="imageSrc" [pageName]="pageName"></my-org-create-page-modal>
+<my-org-create-project-modal *ngIf="createProject" (closeModal)="createProject=false"></my-org-create-project-modal>
+<my-org-notification-modal (saveConfirmation)="saveConfirmation($event)" [selectedNotify]="selectedNotify" [confirmMessage]="confirmMessage" [modal]="modal" (closeModal)="closeNotifyModal()"></my-org-notification-modal>

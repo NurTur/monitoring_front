@@ -1,0 +1,29 @@
+@import '../../../features/admin/pages/equipment/equipment.component.scss';
+.values {
+  padding: 10px;
+  border-bottom: 1px solid #2B3B64;
+  .channel {
+    &-items {
+      border-radius: 5px;
+    }
+    &__item {
+      border: none;
+    }
+  }
+}
+.NO_DATA {
+  background: #2B3B65;
+}
+.NO_CONTROL {
+  background: #505666;
+}
+.DEFAULT {
+  border: 1px solid #4980FF !important;
+}
+.WARNING {
+  background: #FFBB0C;
+  color: #000;
+}
+.CRITICAL {
+  background: #7D0F1E;
+}

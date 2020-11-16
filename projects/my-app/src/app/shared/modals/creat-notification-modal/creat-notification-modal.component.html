@@ -1,0 +1,29 @@
+<div class="page-modal" [class.show]="modal">
+	<div class="overlay"></div>
+	<div class="form">
+		<form>
+		<div class="close" (click)="closeModal.emit()"></div>
+		<h2>{{ 'MODAL.CREATE.TITLE' | translate }}</h2>
+		<!-- <div class="label-form">
+			<label for="">channel</label>
+			<input class="" type="text" [(ngModel)]="channel" name='channel'>
+    </div> -->
+    <div class="label-form">
+			<label for="">Email</label>
+			<input type="text" [(ngModel)]="email" name="email">
+    </div>
+		<div class="label-form">
+			<label for="message">{{ 'MODAL.CREATE.TEXT' | translate }}</label>
+			<textarea [placeholder]="'MODAL.PLACEHOLDER' | translate" [(ngModel)]="message" name="message"></textarea>
+    </div>
+    <div class="label-form sound">
+      <label for="sound">{{ 'MODAL.CREATE.SOUND' | translate }}</label>
+      <input type="checkbox" [(ngModel)]="sound" name="sound">
+    </div>
+		<div class="form-btns">
+			<div class="btn" (click)="closeModal.emit()">{{ 'MODAL.CANCEL' | translate }}</div>
+			<button class="btn primary" (click)="save()" [disabled]="!message">{{ 'MODAL.CONFIRM' | translate }}</button>
+		</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,9 @@
+@import '../sensor-modal/sensor-modal.component.scss';
+.wrapper {
+  max-width: 995px;
+  .channel {
+    &-list {
+      height: calc(100% - 62px);
+    }
+  }
+}

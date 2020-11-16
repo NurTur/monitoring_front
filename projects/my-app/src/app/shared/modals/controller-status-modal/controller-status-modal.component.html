@@ -1,0 +1,16 @@
+<div class="wrapper-modal">
+  <div class="wrapper">
+    <div class="close" (click)="changeModal.emit()"></div>
+    <h1>Статус контроллера</h1>
+    <div class="inputs">
+      <p class="label">Код</p>
+      <input type="text" [(ngModel)]="code">
+      <p class="label">Описание</p>
+      <input type="text" [(ngModel)]="description">
+    </div>
+    <div class="btns">
+      <button class="save" (click)="cStatus ? save(true) : save(false)">Сохранить</button>
+      <button class="cancel" (click)="changeModal.emit()">Отмена</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="modal">
+	<div class="form add">
+		<h1>{{client ? 'Редактирование клиента' : 'Добавление нового клиента'}}</h1>
+		<div class="inputs">
+			<label>Название клиента</label>
+			<input [(ngModel)]="name">
+		</div>
+		<div class="inputs">
+			<label>Назначение пользователей</label>
+			<div class="add-users">
+				<div class="users-list available">
+					<div class="header">
+						Доступные пользователи
+					</div>
+					<div class="user-list-scroll">
+						<div class="user" *ngFor="let user of availableUsers"
+							[class]="highlightedUsers.includes(user) ? 'selected' : ''"
+              (click)="highlightUser(user)">{{user.email}}</div>
+					</div>
+					<div class="all" (click)="selectedAll()">Выбрать все</div>
+				</div>
+				<div class="arrows">
+					<div class="arrow" (click)="moveToSelected()">
+						<img src="assets/img/arrow-right.svg">
+					</div>
+					<div class="arrow" (click)="moveToAvailable()">
+						<img src="assets/img/arrow-left.svg">
+					</div>
+				</div>
+				<div class="users-list selected">
+					<div class="header">
+						Выбранные пользователи
+					</div>
+					<div class="user-list-scroll">
+						<div class="user" *ngFor="let user of selectedUsers"
+							[class]="highlightedUsers.includes(user) ? 'selected' : ''"
+							(click)="highlightUser(user)">{{user.email}}</div>
+					</div>
+					<div class="all" (click)="clearAll()">Удалить все</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-btns">
+			<button class="btn-default" (click)="client ? createClient(true) : createClient(false)">Сохранить</button>
+			<button (click)="changeModal.emit()">Отмена</button>
+		</div>
+	</div>
+</div>

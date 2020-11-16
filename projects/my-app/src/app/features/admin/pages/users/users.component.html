@@ -1,0 +1,123 @@
+<div class="directory">
+  <div class="directory-sidebar">
+    <div class="directory-items">
+		<h3>Управление пользователями</h3>
+      <a routerLink="/groups" class="directory__item">Группы (роли)</a>
+      <p class="directory__item active">Пользователи</p>
+    </div>
+	</div>
+	<div class="directory-wrap">
+		<div class="controller">
+			<div class="directory-inner">
+				<h3>Пользователи</h3>
+				<button class="new" (click)="addUser()">Новый</button>
+			</div>
+			<div class="channel">
+				<div class="channel-table">
+					<div class="channel-items header">
+						<span class="channel__item">E-mail</span>
+						<span class="channel__item">Имя</span>
+						<span class="channel__item">Фамилия</span>
+						<span class="channel__item">Действия</span>
+					</div>
+					<div class="channel-list">
+						<div class="channel-items" *ngFor="let user of users; index as i">
+							<span class="channel__item">{{user.email}}</span>
+							<span class="channel__item">{{user.first_name}}</span>
+							<span class="channel__item">{{user.last_name}}</span>
+							<span class="channel__item">
+								<img class="icon" src="assets/img/edit-white.svg" alt="" (click)="editUser(user)">
+								<img class="icon" src="assets/img/delete.svg" alt="" (click)="deleteUser(user)">
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<ng-container *ngIf="true">
+	<div class="modal" *ngIf="modals.add">
+		<div class="form add">
+			<h1>{{modals.edit ? 'Редактирование пользователя' : 'Добавление нового пользователя'}}</h1>
+			<div class="inputs">
+				<label>Email</label>
+				<input [(ngModel)]="createModal.email">
+			</div>
+			<div class="row">
+				<div class="inputs">
+				  <label>Имя</label>
+				  <input [(ngModel)]="createModal.first_name">
+				</div>
+				<div class="inputs">
+				  <label>Фамилия</label>
+				  <input [(ngModel)]="createModal.last_name">
+				</div>
+			</div>
+			<div class="row">
+				<div class="inputs">
+				  <label>Пароль</label>
+				  <input [(ngModel)]="createModal.pass1">
+				</div>
+				<div class="inputs">
+				  <label>Подтверждение пароля</label>
+				  <input [(ngModel)]="createModal.pass2">
+				</div>
+			</div>
+			<div class="inputs">
+				<label>Группы</label>\
+				<div class="add-users">
+					<div class="users-list available">
+						<div class="header">
+							Доступные группы
+						</div>
+						<div class="user-list-scroll">
+							<div class="user" *ngFor="let user of createModal.availableGroups"
+							  [class]="createModal.highlightedGroups.includes(user) ? 'selected' : ''"
+							  (click)="highlightUser(user)">{{user.name}}</div>
+						</div>
+						<div class="all" (click)="selectedAll()">Выбрать все</div>
+					</div>
+					<div class="arrows">
+						<div class="arrow" (click)="moveToSelected()">
+							<img src="assets/img/arrow-right.svg">
+						</div>
+						<div class="arrow" (click)="moveToAvailable()">
+							<img src="assets/img/arrow-left.svg">
+						</div>
+					</div>
+					<div class="users-list selected">
+						<div class="header">
+						  Выбранные группы
+						</div>
+						<div class="user-list-scroll">
+						  <div class="user" *ngFor="let user of createModal.selectedGroups"
+						    [class]="createModal.highlightedGroups.includes(user) ? 'selected' : ''"
+						    (click)="highlightUser(user)">{{user.name}}</div>
+						</div>
+						<div class="all" (click)="clearAll()">Удалить все</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-btns">
+				<button class="btn-default" (click)="createUser()">Сохранить</button>
+				<button (click)="closeModal()">Отмена</button>
+			</div>
+		</div>
+	</div>
+	<div class="modal" *ngIf="modals.delete">
+		<div class="form narrow">
+			<h1>Удаление</h1>
+			<div class="inputs">
+				<div style='color:red' *ngIf='currentUser.clients?.length > 0'>От пользователя зависят следующие клиенты:
+					<span *ngFor='let client of currentUser.clients'>{{ client.data.name }}, </span>Удаление невозможно.
+				</div>
+				<label *ngIf='currentUser.clients?.length == 0'>Вы действительно хотите удалить пользователя {{currentUser.email}}?</label>
+				<div class="form-btns">
+					<button class="btn-default" (click)="deleteClientFinal()" [disabled]='currentUser.clients?.length > 0'>Да</button>
+					<button (click)="closeModal()">Отмена</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</ng-container>
